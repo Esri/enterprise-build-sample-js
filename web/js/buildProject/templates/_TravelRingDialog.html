@@ -1,0 +1,17 @@
+<div>
+	<div dojoType="dijit/Dialog" dojoAttachPoint="innerDialog" title="Travel Ring Tool">
+		Travel Time (in minutes): 
+		<input dojoType="dijit/form/NumberSpinner" 
+				dojoAttachPoint="timeInput"
+				value="5" 
+				constraints="{min:1,max:30}"
+				largeDelta="5"
+				style="width: 47px;"></input><br/><br/>
+				
+		<button dojoType="dojox/form/BusyButton" 
+				dojoAttachPoint="submitButton" 
+				dojoAttachEvent="onClick:getRing"
+				busyLabel="Creating Ring..."
+				>Submit</button><br/>
+	</div>
+</div>

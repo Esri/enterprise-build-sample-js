@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.12/dojo/resources/dojo.css">
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.12/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.12/dojox/grid/resources/Grid.css">
+    <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.12/dojox/grid/resources/claroGrid.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.12/esri/css/esri.css">
+    <link rel="stylesheet" type="text/css" href="buildProject.css">
+    <style>
+      html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+      #map{padding:0;}
+    </style>
+    <script type="text/javascript">
+    var dojoConfig = {
+    	parseOnLoad: false,
+    	isDebug: true,
+    	async: true,
+    	packages: [
+        	{
+          	name: "data",
+          	location : location.href.split("?")[0] + "js/data" // DELETE FROM HERE
+          },
+          {
+            name: "buildProject",
+            location : location.href.split("?")[0] + "js/buildProject" // TO HERE
+          }
+    	]
+      //
+	};
+    </script>
+     <!--{BUILD-COMMENT}
+    <script type="text/javascript" src="js/dojo/dojo.js"></script>
+    {BUILD-COMMENT}-->
+    <script type="text/javascript" src="http://js.arcgis.com/3.12/"></script>
+    <script type="text/javascript">
+		require([
+		 	"dojo/_base/kernel",
+			"buildProject/SiteManager"
+		], function (kernel, SiteManager) {
+			kernel.global.site = new SiteManager();
+			site.init();
+		});
+      
+    </script>
+  </head>
+  
+  <body class="claro">
+    <div id="toolbarNode">
+    		</div>
+      <div id="map" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;height:100%;width:100%;">
+      </div>
+  </body>
+</html>
