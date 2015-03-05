@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="buildProject GIS Viewer Build" default="default">
+	
+	<property name="dojo-svn-cache" location="c:/dojoSvnCache/dojo" />
+	<available file="${dojo-svn-cache}/util/buildscripts/build.bat" property="dojo-svn-cached"/>
+	<available file="${dojo-svn-cache}/dijit/dijit.js" property="dijit-svn-cached"/>
+	
+	<property name="dist" location="dist" />
+	<property name="web" location="web" />
+	<property name="appname" value="buildProject" />
+	
+	<property name="dojoDeleteExclude" value="dojo.js,nls/dojo_en-us.js" />
+	<property name="dojoxDeleteExclude" value="gfx/shape.js,gfx/path.js,gfx/svg.js,gfx/vml.js,gfx/arc.js,gfx/gradient.js,gfx/_base.js" />
+	<property name="buildProjectDeleteExclude" value="SiteManager.js,nls/SiteManager_en-us.js," />
+	
+	<path id="build.classpath">
+		<fileset dir="build/lib" includes="*.jar" />
+	</path>
+	<target name="default" depends="CLEAN_DIST,CREATE_DIST,copy-files,build" />
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="build.classpath" />
+	<taskdef name="jsapi-fetch" classname="com.esri.ant.JsapiFetchTask" classpathref="build.classpath" />
+	
+	
+	<!-- delete the old app directory & war, if it exists -->
+	<target name="CLEAN_DIST">
+		<delete dir="${dist}/${appname}" failonerror="false" />
+	</target>
+
+	<!-- create the directories for app build -->
+	<target name="CREATE_DIST">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/${appname}" />
+	</target>
+	
+	<target name="copy-files">
+		<!-- copy the web directory into the dist -->
+		<copy todir="${dist}/${appname}">
+			<fileset dir="${web}" />
+		</copy>
+	</target>
+	
+	<target name="checkout-dojo-utils" unless="dojo-svn-cached">
+		<echo>
+			Dojo utilities not found.  Caching dojo src...
+		</echo>
+		
+		<svn>
+			<export srcUrl="https://github.com/dojo/dojo/tags/1.9.1" destPath="${dojo-svn-cache}/dojo" />
+			<export srcUrl="https://github.com/dojo/util/tags/1.9.1" destPath="${dojo-svn-cache}/util" />
+		</svn>
+	</target>
+	
+	<target name="checkout-dijit-dojox" unless="dijit-svn-cached">
+			<echo>
+				Dijit/Dojox not found.  Caching dojo src...
+			</echo>
+			
+			<svn>
+				<export srcUrl="https://github.com/dojo/dijit/tags/1.9.1" destPath="${dojo-svn-cache}/dijit" />
+				<export srcUrl="https://github.com/dojo/dojox/tags/1.9.1" destPath="${dojo-svn-cache}/dojox" />
+			</svn>
+	</target>
+	
+	<target name="build" depends="checkout-dojo-utils,checkout-dijit-dojox">
+		<echo>
+			Running dojo build
+		</echo>
+
+		<!-- copy the dojo files to web directory -->
+		<copy todir="${dist}/${appname}/js/dojo">
+			<fileset dir="${dojo-svn-cache}/dojo" />
+		</copy>
+		<copy todir="${dist}/${appname}/js/util">
+			<fileset dir="${dojo-svn-cache}/util" />
+		</copy>
+		<copy todir="${dist}/${appname}/js/dijit">
+			<fileset dir="${dojo-svn-cache}/dijit" />
+		</copy>
+		<copy todir="${dist}/${appname}/js/dojox">
+			<fileset dir="${dojo-svn-cache}/dojox" />
+		</copy>
+		<copy todir="${dist}/${appname}/js/esri">
+			<fileset dir="${dojo-svn-cache}/../jsapi3.9amd/js/esri" />
+		</copy>
+
+		<!--jsapi-fetch url="http://js.arcgis.com/3.8amd/js" inputs="esriIncludes.txt" destDir="${dist}/${appname}/js"/-->
+		
+		<copy file="build/buildProject.profile.js" todir="${dist}/${appname}/js/util/buildscripts/profiles" />
+		
+		<!-- Run the dojo build utility -->
+				
+		<exec
+			dir="${dist}/${appname}/js/util/buildscripts/"
+			executable="${dist}/${appname}/js/util/buildscripts/build.bat"
+			failonerror="true"
+			errorproperty="dojoErrors">
+				<arg line="profile=buildProject action=release optimize=shrinksafe copytests=false internStrings=true releaseName=buildProjectRelease cssOptimize=comments" />
+		</exec>
+		
+		<condition property="buildFailed">
+			<contains string="${dojoErrors}" substring=" " />
+		</condition>
+		
+		<fail if="buildFailed" message="Failed running dojo build: ${dojoErrors}"/>
+		
+		<copy todir="${dist}/${appname}/js/dojo">
+			<fileset dir="${dist}/${appname}/js/release/buildProjectRelease/dojo">
+				<filename name="dojo.js" />
+			</fileset>
+		</copy>
+		<copy todir="${dist}/${appname}/js/dojo/nls">
+			<fileset dir="${dist}/${appname}/js/release/buildProjectRelease/dojo/nls">
+				<filename name="dojo_en-us.js" />
+			</fileset>
+		</copy>
+		
+		<replace file="${dist}/${appname}/index.html">
+			<replacefilter token="&lt;!--{BUILD-COMMENT}" value="" />
+			<replacefilter token="{BUILD-COMMENT}--&gt;" value="" />
+			<replacefilter token="//{BUILD-COMMENT}" value="" />
+			<replacefilter token="isDebug: true" value="isDebug: false" />
+			<replacefilter token="&lt;script type=&quot;text/javascript&quot; src=&quot;http://js.arcgis.com/3.8/&quot;&gt;&lt;/script&gt;" value=""/>
+		</replace>
+
+		<replaceregexp  file="${dist}/${appname}/index.html" match="// DELETE FROM HERE.*// TO HERE" flags="s" replace="" />
+				
+		<delete dir="${dist}/${appname}/js/release" />
+		<delete dir="${dist}/${appname}/js/util" />
+		<delete includeemptydirs="true">
+			<fileset dir="${dist}/${appname}/js/buildProject" excludes="${buildProjectDeleteExclude},**/images/**" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${dist}/${appname}/js/esri" excludes="${esriDeleteExclude},**/images/**" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${dist}/${appname}/js/dojo" excludes="${dojoDeleteExclude},**/images/**,**/*.gif" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${dist}/${appname}/js/dijit" excludes="${dijitDeleteExclude},**/images/**,**/*.png,**/*.gif" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${dist}/${appname}/js/dojox" excludes="${dojoxDeleteExclude},**/images/**" />
+		</delete>
+		
+	</target>
+
+	<target name="jsapifetch">
+		<jsapi-fetch url="http://js.arcgis.com/3.8amd/js" inputs="esriIncludes.txt" destDir="${dojoSvnCache}/esri"/>
+	</target>
+	
+	
+</project>

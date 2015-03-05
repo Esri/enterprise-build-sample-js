@@ -1,0 +1,59 @@
+.toolbar {
+	background:white;
+	border-style:solid;
+	border-width:1px;
+	position:absolute;
+	top:5px;
+	right:5px;
+	z-index:999;
+	padding: 0px 2px 5px;
+	width: 185px;
+}
+
+.toolbar .header {
+	cursor: move;
+	border-bottom-style:solid;
+	border-bottom-color:black;
+	border-bottom-width:1px;
+}
+
+.assetDialog {
+	height: 500px;
+	width: 500px;	
+}
+
+.areaDialog {
+	height: 500px;
+	width: 500px;	
+}
+
+.toolbar .dijitButtonNode {
+	width: 170px;
+}
+
+.chartingPane {
+	
+	width:360px;
+	background:white;
+	border-style:solid;
+	border-width:1px;
+	position:absolute;
+	top:5px;
+	right:205px;
+	z-index:999;
+}
+.chart {
+	height:153px;
+	width:200px;	
+}
+
+.titleNode {
+	font-weight:bold;
+	font-face:arial;
+	font-size:15px;
+	border-bottom-style: solid;
+	border-bottom-color: black;
+	border-bottom-width: 1px;
+	padding-left: 10px;z
+}
+
