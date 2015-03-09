@@ -2,9 +2,7 @@
 
 Here is a sample application, bundled with current versions of the patched Dojo source and ESRI JavaScript API AMD Build. The sample uses ArcGIS Online basemaps and services.  Learn more [here](http://www.arcgis.com/about/).
 
-[View it live](http://edn1.esri.com/quickstart-map-js/)
-
-![App](https://raw.github.com/Esri/quickstart-map-js/master/quickstart-map-js.png)
+![App](https://raw.github.com/ArcGIS/enterprise-build-sample-js/master/enterprise-build-sample-js.png)
 
 ## Features
 * Sample Enterprise Application - Formatted and developed to work with Automated Dojo Builds
