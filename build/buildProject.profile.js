@@ -40,6 +40,18 @@ var profile = (function () {
 		{
 			"name" : "esri",
 			"location" : "../esri"
+		},
+		{
+			"name" : "dgrid",
+			"location" : "../dgrid"
+		},
+		{
+			"name" : "put-selector",
+			"location" : "../put-selector"
+		},
+		{
+			"name": "xstyle",
+			"location" : "../xstyle"
 		}
 		]
 	}
