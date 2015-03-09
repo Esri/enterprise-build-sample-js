@@ -14,7 +14,7 @@ Here is a sample application, bundled with current versions of the patched Dojo 
 ## Instructions
 
 1. Fork and then clone the repo. 
-2. Unpackage dojo, dgrid, put=selector, xstyle, and ArcGIS JavaScript API zip files.
+2. Unpackage dojo, dijit, dojox, dgrid, put-selector, xstyle, and ArcGIS JavaScript API zip files.
 3. Add and adjust the ANT build file and build profile to your target application
 4. Use ANT to run build.xml from the command line
 
@@ -22,8 +22,7 @@ Here is a sample application, bundled with current versions of the patched Dojo 
 
 * Notepad or your favorite HTML editor
 * Apache ANT
-* Cygwin
-* Node.js
+* Java
 * Web browser with access to the Internet
 
 ## Resources
@@ -58,5 +57,5 @@ limitations under the License.
 
 A copy of the license is available in the repository's [license.txt]( https://raw.github.com/Esri/quickstart-map-js/master/license.txt) file.
 
-[](Esri Tags: Enterprise Build Sample)
+[](Esri Tags: Enterprise, Build, JavaScript, Dojo)
 [](Esri Language: JavaScript)​
