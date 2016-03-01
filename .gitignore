@@ -1,1 +1,16 @@
 dist/
+node_modules/
+enterprise-build-sample-js.sublime-project
+enterprise-build-sample-js.sublime-workspace
+web/js/dgrid/
+web/js/dijit/
+web/js/dojo/.bower.json
+web/js/dojo/
+web/js/dojox/
+web/js/dstore/
+web/js/esri/.bower.json
+web/js/esri/
+web/js/put-selector/
+web/js/util/.bower.json
+web/js/util/
+web/js/xstyle/
