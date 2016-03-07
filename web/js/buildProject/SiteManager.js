@@ -16,7 +16,7 @@ define([
         // Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
         "buildProject/InfoGrid",
-        "buildProject/Toolbar",
+        "buildProject/Toolbar"
 ], function (
 		declare,
 		kernel,
