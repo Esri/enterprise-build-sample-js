@@ -4,7 +4,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-replace');
+  grunt.loadNpmTasks('grunt-karma');
+  
   grunt.initConfig({
+	  
     clean: {
       build: {
         src: ['dist/']
@@ -33,6 +36,7 @@ module.exports = function (grunt) {
 		]
 	  }
     },
+	
     copy: {
       main: {
         files: [{
@@ -51,12 +55,13 @@ module.exports = function (grunt) {
         }]
       }
     },
+	
 	replace: {
 		dist: {
 			options: {
 				patterns: [
 					// replace the hosted jsapi with the dojo build layer file
-					{ match: /\/\/js.arcgis.com\/3.15\/"/g, replacement: 'js/dojo/dojo.js"'},
+					{ match: /\/\/js.arcgis.com\/3.16\/"/g, replacement: 'js/dojo/dojo.js"'},
 					// remove the reference to your app package
 					{ match: /\/\/ DELETE FROM HERE[\s\S]*\/\/ TO HERE/, replacement: ''},
 					// clean up any debug flags to make the app ready for production
@@ -66,6 +71,7 @@ module.exports = function (grunt) {
 			files: [{src:'web/index.html', dest:'dist/index.html'}]
 		}
 	},
+	
     dojo: {
       dist: {
         options: {
@@ -79,7 +85,30 @@ module.exports = function (grunt) {
         cwd: './',
         basePath: './'
       }
-    }
+    },
+	
+	karma: {
+	  options: {
+        // get defaults from karma config
+        configFile: 'karma.conf.js',
+        // run all tests once then exit
+        singleRun: true,
+        // only show error messages
+        logLevel: 'ERROR',
+      },
+	  unit: {
+		  options:{
+			singleRun: true,
+			reporters : ['junit', 'coverage'],
+			junitReporter: {
+			  outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml 
+			  outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile 
+			  suite: '', // suite will become the package name attribute in xml testsuite element 
+			  useBrowserName: true // add browser name to report and classes names 
+			}
+		  }
+	  }
+	}
   });
 
   grunt.registerTask('build', ['clean:build', 'dojo', 'copy', 'replace', 'clean:nonLayer']);

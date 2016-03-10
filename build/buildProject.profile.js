@@ -57,6 +57,16 @@ var profile = {
 		{
 			"name": "xstyle",
 			"location" : "web/js/xstyle"
+		},
+		// moment package is newly needed for 3.16
+		{
+		  name: 'moment',
+		  location: 'web/js/moment',
+		  main: 'moment',
+		  trees: [
+			  // don't bother with .hidden, tests, min, src, and templates
+			  [".", ".", /(\/\.)|(~$)|(test|txt|src|min|templates)/]
+		  ]
 		}
 	],
 	

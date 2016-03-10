@@ -1,7 +1,6 @@
 {
   "name": "EnterpriseJSApp",
   "version": "1.0.0",
-  "dependencies": {},
   "devDependencies": {
     "dojo": "Esri/dojo#v1.10.4/esri-3.14.0",
     "dijit": "Esri/dijit#v1.10.4/esri-3.14.0",
@@ -11,7 +10,8 @@
     "util": "Esri/dojo-util#v1.10.4/esri-3.14.0",
     "dstore": "#v1.1.0",
     "put-selector": "#0.3.6",
-    "esri": "Esri/arcgis-js-api#3.15.0"
+    "esri": "Esri/arcgis-js-api#3.16.0",
+	"moment": "^2.12.0"
   },
   "resolutions": {
     "dojo": "v1.10.4/esri-3.14.0"
