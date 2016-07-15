@@ -1,33 +1,43 @@
 # enterprise-build-sample-js
 
-Here is a sample application, bundled with current versions of the patched Dojo source and ESRI JavaScript API AMD Build. The sample uses ArcGIS Online basemaps and services.  Learn more [here](http://www.arcgis.com/about/).
+This sample application shows how to run a dojo build on a 3.x ArcGIS API for JavaScript application to get it ready for production. The sample intends for bower to be used for dependency management to download the ArcGIS API for JavaScript, dojo, and other dependencies and grunt to run the dojo build (both of which depend on Node.js). This sample is using the 3.14 version of the ArcGIS API for JavaScript. Updated bower files for newer versions of the ArcGIS API for JavaScript can be found at [https://github.com/Esri/jsapi-resources](https://github.com/Esri/jsapi-resources).
 
 ![App](enterprise-build-sample-js.png?raw=true)
 
 ## Features
 * Sample Enterprise Application - Formatted and developed to work with Automated Dojo Builds
-* Sample Ant File - Build file to be adapted to your own applications
-* Build Profiles - Sample profile files to be adapted to your own applications
-* Patched Dojo Source - Dojo, dgrid, put-selector, and xstyle source code, which has been patched to better work with the ArcGIS JavaScript API.
-* ArcGIS JavaScript API AMD Build - Version of the JavaScript API which has been specially built to work with the Dojo Build Process.
+* Sample Grunt File - Build file to be adapted to your own applications
+* Build Profiles - Sample dojo build profile files to be adapted to your own applications
+* Bower File - to download the Dojo, dgrid, put-selector, and xstyle source code, which has been patched to better work with the ArcGIS JavaScript API and the ArcGIS JavaScript API AMD Build. 
 
 ## Instructions
 
-1. Fork and then clone the repo. 
-2. Unpackage dojo, dijit, dojox, dgrid, put-selector, xstyle, and ArcGIS JavaScript API zip files from /apiCache.
-3. Add and adjust the ANT build file and build profile to your target application
-4. Use ANT to run build.xml from the command line
+1. install [git](https://git-scm.com/)
+2. install [Node.js](https://nodejs.org/)
+3. Install global packages with [npm](https://www.npmjs.com)
 
+	`npm install -g grunt-cli`
+
+	`npm install -g bower`
+
+4. Fork and then clone this repository.
+5. Navigate to the folder project was cloned to.
+6. Install local node packages into your project by running `npm install`
+7. Install the JavaScript dependencies `bower install`, because of the .bowerrc file config these will install into the web/js folder.
+8. Run the dojo build using grunt by running `grunt build`
+9. When the build is complete the dist directory should be a production ready version of the application
+	
 ## Requirements
 
 * Notepad or your favorite HTML editor
-* Apache ANT
-* Java
+* [Node.js](https://nodejs.org/)
+* [Bower](https://bower.io)
+* [Grunt](http://gruntjs.com/)
 * Web browser with access to the Internet
 
 ## Resources
 
-* [ArcGIS for JavaScript API Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
+* [ArcGIS for JavaScript API Resource Center](https://developers.arcgis.com/javascript/3/)
 * [Dojo Build Process Tutoiral](http://dojotoolkit.org/documentation/tutorials/1.10/build/)
 * [ArcGIS Blog](http://blogs.esri.com/esri/arcgis/)
 * [twitter@esri](http://twitter.com/esri)

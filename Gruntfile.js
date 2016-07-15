@@ -28,6 +28,7 @@ module.exports = function (grunt) {
 			"!dist/js/dojo/nls/dojo_en-us.js",
 			"!dist/js/dojo/resources",
 			"!dist/**/images/**",
+			"!dist/**/data/**",
 			"!dist/js/**/*.gif",
 			"!dist/js/**/*.png",
 			/*"!dist/js/dojox",
