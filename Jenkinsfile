@@ -1,13 +1,13 @@
 #!groovy
 
 node {
-	stage('checkout')
-	checkout scm
+	stage('checkout') {
+		checkout scm
+	}
 	
-	stage('prebuild')
-	withNPM() {
-		sh 'npm install -g grunt-cli'
-	
-		sh 'npm install -g bower'
+	stage('prebuild') {
+		bat 'npm install -g grunt-cli'
+
+		bat 'npm install -g bower'
 	}
 }
