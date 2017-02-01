@@ -5,7 +5,7 @@ node {
 	checkout scm
 	
 	stage('prebuild')
-	sh 'npm install -g grunt-cli'
+	cmd 'npm install -g grunt-cli'
 	
-	sh 'npm install -g bower'
+	cmd 'npm install -g bower'
 }
