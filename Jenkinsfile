@@ -5,7 +5,9 @@ node {
 	checkout scm
 	
 	stage('prebuild')
-	cmd 'npm install -g grunt-cli'
+	withNPM(npmrcConfig: 'my-custom-nprc') {
+		sh 'npm install -g grunt-cli'
 	
-	cmd 'npm install -g bower'
+		sh 'npm install -g bower'
+	}
 }
