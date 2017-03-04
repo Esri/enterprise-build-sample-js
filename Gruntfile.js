@@ -5,6 +5,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-replace');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+
+  var port = grunt.option('port') || 8000;
+  var base = grunt.option('base') || 'web';
   
   grunt.initConfig({
 	  
@@ -109,9 +115,61 @@ module.exports = function (grunt) {
 			}
 		  }
 	  }
+	},
+	jshint: {
+		options: {
+			curly: false,
+			eqeqeq: true,
+			immed: true,
+			latedef: true,
+			newcap: true,
+			noarg: true,
+			sub: true,
+			undef: true,
+			eqnull: true,
+			browser: true,
+			expr: true,
+			globals: {
+				head: false,
+				module: false,
+				console: false,
+				unescape: false,
+				define: false,
+				exports: false
+			}
+		},
+		files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ]
+	},
+	connect: {
+	  	server: {
+	  		options: {
+	  			port: port,
+	  			base: base,
+	  			livereload: true,
+	  			open: true
+	  		}
+	  	}
+	  },
+	  watch: {
+		options: {
+			livereload: true
+		},
+		js: {
+			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ],
+			tasks: ['js']
+		},
+		html: {
+			files: [ 'web/index.html']
+		}
 	}
   });
 
+  // Serve dev app locally
+  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+
   grunt.registerTask('build', ['clean:build', 'dojo', 'copy', 'replace', 'clean:nonLayer']);
+
+  	// JS task
+	grunt.registerTask( 'js', [ 'jshint'] );
 
 };
