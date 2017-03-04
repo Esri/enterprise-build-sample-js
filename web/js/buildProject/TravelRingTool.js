@@ -10,7 +10,7 @@ define([
         "esri/tasks/Geoprocessor",
         "esri/toolbars/draw",
         //	Our Project's classes ---------------------------------------------
-        "buildProject/_TravelRingDialog"
+        "buildProject/TravelRingDialog"
 ], function (
 		Color,
 		declare,
@@ -21,7 +21,7 @@ define([
 		SimpleLineSymbol,
 		Geoprocessor,
 		Draw,
-		_TravelRingDialog) {
+		TravelRingDialog) {
 	return declare(null, {
 		driveTimesTask: null,
 		isActive: false,
@@ -71,7 +71,7 @@ define([
 			//		Point selected by the draw toolbar.  Travel ring will be drawn around this point
 			
 			if (!this.dialog){
-				this.dialog = new _TravelRingDialog({"map":this.map,"config":this.config,"driveTimesTask":this.driveTimesTask});
+				this.dialog = new TravelRingDialog({"map":this.map,"config":this.config,"driveTimesTask":this.driveTimesTask});
 			}
 			this.dialog.show(geometry);
 			
