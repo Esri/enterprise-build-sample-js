@@ -17,6 +17,7 @@
     "karma-chrome-launcher": "^0.1.4",
     "karma-dojo": "0.0.1",
     "karma-jasmine": "^0.1.5",
-    "karma-junit-reporter": "^0.3.8"
+    "karma-junit-reporter": "^0.3.8",
+    "dojo-themes": "^1.12.2"
   }
 }

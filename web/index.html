@@ -2,16 +2,11 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.19/dojo/resources/dojo.css">
-    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.19/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.19/dojox/grid/resources/Grid.css">
-    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.19/dojox/grid/resources/claroGrid.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.19/esri/css/esri.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/4.3/dojo/resources/dojo.css">
+    <link rel="stylesheet" type="text/css" href="//js.arcgis.com/4.3/dojox/grid/resources/Grid.css">
+    <link rel="stylesheet" href="//js.arcgis.com/4.3/esri/css/main.css">
+    <link rel="stylesheet" href="./dojo-themes/flat/flat.css">
     <link rel="stylesheet" type="text/css" href="buildProject.css">
-    <style>
-      html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-      #map{padding:0;}
-    </style>
     <script type="text/javascript">
     var dojoConfig = {
     	parseOnLoad: false,
@@ -33,7 +28,7 @@
      <!--{BUILD-COMMENT}
     <script type="text/javascript" src="js/dojo/dojo.js"></script>
     {BUILD-COMMENT}-->
-    <script type="text/javascript" src="//js.arcgis.com/3.19/"></script>
+    <script type="text/javascript" src="//js.arcgis.com/4.3/"></script>
     <script type="text/javascript">
 		require([
 		 	"dojo/_base/kernel",
@@ -46,7 +41,7 @@
     </script>
   </head>
   
-  <body class="claro">
+  <body class="flat">
     <div id="toolbarNode">
     		</div>
       <div id="map" dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;height:100%;width:100%;">

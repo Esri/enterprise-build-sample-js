@@ -7,11 +7,12 @@ define([
         "dojo/dom",
         "dojo/on",
         "dojo/parser",
-        "esri/map",
+        "esri/Map",
+        "esri/views/MapView",
         "esri/geometry/Extent",
-        "esri/layers/ArcGISDynamicMapServiceLayer",
-        "esri/layers/ArcGISTiledMapServiceLayer",
-        "esri/tasks/IdentifyParameters",
+        "esri/layers/MapImageLayer",
+        "esri/layers/TileLayer",
+        "esri/tasks/support/IdentifyParameters",
         "esri/tasks/IdentifyTask",
         // Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
@@ -26,9 +27,10 @@ define([
 		on,
 		parser,
 		Map,
+		MapView,
 		Extent,
-		ArcGISDynamicMapServiceLayer,
-		ArcGISTiledMapServiceLayer,
+		MapImageLayer,
+		TileLayer,
 		IdentifyParameters,
 		IdentifyTask,
 		buildProject,
@@ -45,7 +47,7 @@ define([
 		//		The application's map object
 		//	identifyTask:	esri.tasks.IdentifyTask
 		//		Task used to identify entities, districts, and zip codes.
-		//	identifyParams:	esri.tasks.IdentifyParameters
+		//	identifyParams:	esri.tasks.support.IdentifyParameters
 		//		Parameters used by the Identify Task object
 		//	config:	Object
 		//		Configuration object loaded from data/config.json
@@ -92,8 +94,19 @@ define([
 				"spatialReference":{"wkid":102100}
 			 });
 
+			this.map = new Map({
+				"basemap": "satellite"
+			});
+
+			console.debug(this.map);
+
 			var lods = this.config.mapLods;
-			this.map = new Map("map",{extent:initExtent,lods:lods,showInfoWindowOnClick:false,logo:false});
+			this.view = new MapView({
+				"container": "map",
+				"map": this.map,
+				"extent": initExtent,
+				"lods": lods
+			});
 			//resize the map when the browser resizes - view the 'Resizing and repositioning the map' section in 
 			//the following help topic for more details http://help.esri.com/EN/webapi/javascript/arcgis/help/jshelp_start.htm#jshelp/inside_guidelines.htm
 			var resizeTimer;
@@ -107,31 +120,36 @@ define([
 				}));
 			}));
 			
-			//	If baseMapUrl is configured, this loads a background map to be used in the application
-			if (this.config.baseMapUrl){
-				var basemap = new ArcGISTiledMapServiceLayer(this.config.baseMapUrl);
-				on(basemap,"error",buildProject.displayError);
-				this.map.addLayer(basemap);
-			}
-			
 			//	Counties, states, city names
-			var boundariesLayer = new ArcGISTiledMapServiceLayer(this.config.boundariesUrl,
-				{"displayLevels":[4,5,9,10],
+			this.boundariesLayer = new TileLayer({
+				"url": this.config.boundariesUrl,
+				"displayLevels":[4,5,9,10],
 				"id":"boundariesLayer",
-				"opacity":0.5}
-			);
-			on(boundariesLayer,"error",buildProject.displayError);
-			this.map.addLayer(boundariesLayer);
-			
+				"opacity":0.5
+			});
+			on(this.boundariesLayer,"error",buildProject.displayError);			
 			
 			//	Entities/districts/zip codes
-			var entityDistrictLayer = new ArcGISDynamicMapServiceLayer(this.config.entityDistrictUrl,{"id":"entityDistrictLayer"});
-			entityDistrictLayer.setVisibleLayers([1]);
+			var entityDistrictLayer = new MapImageLayer({
+				"url":this.config.entityDistrictUrl,
+				"id":"entityDistrictLayer",
+				"sublayers": [
+					{
+						"id": 1,
+						"visible": true
+					}
+				]
+			});
+
 			on(entityDistrictLayer,"error",buildProject.displayError);
-			this.map.addLayer(entityDistrictLayer);
+
+			this.map.addMany([
+				this.boundariesLayer,
+				entityDistrictLayer
+			]);
 			
 			// Connect zoom and resize handlers.
-			this.map.on("zoom-end",lang.hitch(this,this._onZoom)); 
+			this.view.watch("zoom", lang.hitch(this,this._onZoom));
 		},
 		setupToolbar: function(){
 			//	summary:
@@ -139,7 +157,12 @@ define([
 			
 			this.toolbar = dom.byId(this.toolbar);
 			if (this.toolbar){
-				this.toolbar = new Toolbar({"id":"toolbar","map":this.map,"config":this.config},this.toolbar);
+				this.toolbar = new Toolbar({
+					"id":"toolbar",
+					"map":this.map,
+					"view": this.view,
+					"config":this.config
+				},this.toolbar);
 			}
 		},
 		setupInfoGrid: function(){
@@ -152,7 +175,13 @@ define([
 			this.identifyParams.tolerance = 1;
 	        this.identifyParams.returnGeometry = true;
 	        
-			this.infoGrid = new InfoGrid({"id":"infoGrid","map":this.map,"config":this.config});
+			this.infoGrid = new InfoGrid({
+				"id":"infoGrid",
+				"map":this.map,
+				"config":this.config,
+				"view": this.view
+			});
+
 			this.enableIdentifyConnect();
 		},
 		disableIdentifyConnect: function(){
@@ -173,7 +202,7 @@ define([
 			//		This is used by the travel ring tool, and asset connections to allow us to restore
 			//		default functionality when they are done with the map.
 			
-			this.identifyConnect = on(this.map,"click",lang.hitch(this,this.identify));
+			this.identifyConnect = on(this.view,"click",lang.hitch(this,this.identify));
 		},
 		identify: function(evt){
 			//	summary:
@@ -185,7 +214,7 @@ define([
 			//		Mouse click event.
 			
 			this.identifyParams.geometry = evt.mapPoint;
-			this.identifyParams.mapExtent = this.map.extent;
+			this.identifyParams.mapExtent = this.view.get("extent");
 			
 			// This is used to determine which map layer we are running the identify on
 			// and is based on the zoom level of the map.
@@ -193,7 +222,7 @@ define([
 			//  1: Districts
 			//  2: Zip Codes
 			
-			var level = this.map.getLevel();
+			var level = this.view.get("zoom");
 			if (level < 2){
 				this.identifyParams.layerIds = [0];
 			} else if (level >= 2 && level < 5){
@@ -204,32 +233,29 @@ define([
 				return;
 			}
 			
-			this.identifyTask.execute(this.identifyParams,lang.partial(dojo.hitch(this.infoGrid,this.infoGrid.populate),evt.screenPoint),buildProject.displayError);
+			this.identifyTask.execute(this.identifyParams).then(
+				lang.partial(dojo.hitch(this.infoGrid,this.infoGrid.populate),evt.mapPoint),
+				buildProject.displayError
+			);
 		},
-		_onZoom: function(/*esri.geometry.Extent*/extent, /*int*/zoomFactor, /*esri.geometry.Point*/anchor, /*int*/level){
+		_onZoom: function(/*int*/level){
 			//	summary:
 			//		Called everytime the maps zoom level is changed.
 			//	description:
 			//		Called everytime the maps zoom level is changed.
 			//		Adjusts the visibility of the boundaries layer and handles the asset layer button.
-			//	extent:	esri.geoemtry.Extent
-			//		The map's final extent after zooming
-			//	zoomFactor:	float
-			//		The amount as a percentage that the map zoomed in or out from the previous extent.
-			//	anchor:	esri.geometry.Point
-			//		The location of the mouse pointer.
 			//	level:	int
 			//		Zoom level after zooming.
 			
-			var boundaries = this.map.getLayer("boundariesLayer");
+			var boundaries = this.boundariesLayer;
 			
 			if (level < 3){
-				boundaries.setOpacity(0.5);
+				boundaries.set("opacity",0.5);
 			} else {
-				boundaries.setOpacity(1);
+				boundaries.set("opacity",1);
 			}
 			
-			if (level > 8){
+			if (level > 12){
 				this.toolbar.toggleAssetsButton.set("disabled",false);
 			} else {
 				if (this.toolbar.viewingAssets){

@@ -1,5 +1,4 @@
 {
-	"baseMapUrl": "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
 	"transportationUrl": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer",
 	"boundariesUrl": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places_Alternate/MapServer",
 	"entityDistrictUrl": "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer",

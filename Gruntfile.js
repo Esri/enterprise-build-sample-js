@@ -10,7 +10,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 
   var port = grunt.option('port') || 8000;
-  var base = grunt.option('base') || 'web';
   
   grunt.initConfig({
 	  
@@ -144,9 +143,9 @@ module.exports = function (grunt) {
 	  	server: {
 	  		options: {
 	  			port: port,
-	  			base: base,
 	  			livereload: true,
-	  			open: true
+	  			open: true,
+	  			base: ['web','node_modules']
 	  		}
 	  	}
 	  },
