@@ -70,3 +70,6 @@ html, body {
 	padding-left: 10px;z
 }
 
+.flat .dijitTextBox {
+	width: 60px !important;
+}

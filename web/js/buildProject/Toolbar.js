@@ -91,20 +91,13 @@ define([
 				this.map.add(this.streetMapLayer);
 			}
 
-			var assetLayer = this.map.layers.find(function(lyr){
-				return lyr.id === "entityDistrictLayer";
-			});
-
-			console.debug("GOT ASSET LAYER",assetLayer);
 			
 			if (this.viewingStreets){
 				this.streetMapLayer.set("visible",false);
-				assetLayer.set("visible",true);
 				this.toggleStreetsButton.set("label","Show Transportation");
 				dom.byId("map").style.backgroundColor = "white";
 			} else {
 				this.streetMapLayer.set("visible",true);
-				assetLayer.set("visible",false);
 				this.toggleStreetsButton.set("label","Hide Transportation");
 				dom.byId("map").style.backgroundColor = "black";
 			}

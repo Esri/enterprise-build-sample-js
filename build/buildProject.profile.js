@@ -13,16 +13,15 @@ var profile = {
 			boot: true, // include AMD loader
 			customBase: true, // don't include all of the globals in dojo/main
 			include: [
-				'dojo/i18n', // this prevents a bunch of extra requests trying to get localization
 				'buildProject/SiteManager',
-				'esri/dijit/Attribution',
+				'esri/portal/support/layersCreator',
 				'dojox/gfx/path',
 				'dojox/gfx/svg',
 				'dojox/gfx/shape',
 				'dojox/gfx/filters',
 				'dojox/gfx/svgext',
-				'dojo/_firebug/firebug',
-				'esri/IdentityManager'
+				'esri/views/2d/layers/TiledLayerView2D',
+				'esri/views/2d/layers/MapImageLayerView2D'
 			],
 			includeLocales: ['en-us']
 		},
@@ -36,7 +35,7 @@ var profile = {
 	packages: [
 		{
 			"name" : "buildProject",
-			"location" : "js/buildProject"
+			"location" : "./buildProject"
 		},
 		{
 			"name" : "dojo",

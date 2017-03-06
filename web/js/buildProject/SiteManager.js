@@ -95,10 +95,9 @@ define([
 			 });
 
 			this.map = new Map({
-				"basemap": "satellite"
+				"basemap": "dark-gray"
 			});
 
-			console.debug(this.map);
 
 			var lods = this.config.mapLods;
 			this.view = new MapView({
@@ -119,34 +118,6 @@ define([
 					}), 250);
 				}));
 			}));
-			
-			//	Counties, states, city names
-			this.boundariesLayer = new TileLayer({
-				"url": this.config.boundariesUrl,
-				"displayLevels":[4,5,9,10],
-				"id":"boundariesLayer",
-				"opacity":0.5
-			});
-			on(this.boundariesLayer,"error",buildProject.displayError);			
-			
-			//	Entities/districts/zip codes
-			var entityDistrictLayer = new MapImageLayer({
-				"url":this.config.entityDistrictUrl,
-				"id":"entityDistrictLayer",
-				"sublayers": [
-					{
-						"id": 1,
-						"visible": true
-					}
-				]
-			});
-
-			on(entityDistrictLayer,"error",buildProject.displayError);
-
-			this.map.addMany([
-				this.boundariesLayer,
-				entityDistrictLayer
-			]);
 			
 			// Connect zoom and resize handlers.
 			this.view.watch("zoom", lang.hitch(this,this._onZoom));
@@ -247,13 +218,6 @@ define([
 			//	level:	int
 			//		Zoom level after zooming.
 			
-			var boundaries = this.boundariesLayer;
-			
-			if (level < 3){
-				boundaries.set("opacity",0.5);
-			} else {
-				boundaries.set("opacity",1);
-			}
 			
 			if (level > 12){
 				this.toolbar.toggleAssetsButton.set("disabled",false);

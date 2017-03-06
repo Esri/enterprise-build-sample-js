@@ -31,9 +31,9 @@ module.exports = function (grunt) {
 			"!dist/js/dojo",
 			"!dist/js/dojo/dojo.js",
 			"!dist/js/dojo/nls/dojo_en-us.js",
-			"!dist/js/dojo/resources",
+			"!dist/js/dojo/resources/**/*",
 			"!dist/**/images/**",
-			"!dist/**/data/**",
+			"!dist/js/data/**",
 			"!dist/js/**/*.gif",
 			"!dist/js/**/*.png",
 			/*"!dist/js/dojox",
@@ -44,21 +44,25 @@ module.exports = function (grunt) {
     },
 	
     copy: {
-      main: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['**/*', '!js/**'],
-          dest: './dist/'
-        }]
-      },
-	  support: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['js/data/**', 'js/images/**'],
-          dest: './dist/'
-        }]
+      prebuild: {
+      	files: [{
+      		expand: true,
+      		cwd: 'web',
+      		src: ['**'],
+      		dest: './dist/'
+      	},
+      	{
+      		expand: true,
+      		cwd: 'arcgis-js-api',
+      		src: ['**'],
+      		dest: './dist/js'
+      	},
+      	{
+      		expand: true,
+      		cwd: './node_modules',
+      		src: ['dojo-themes/**'],
+      		dest: './dist'
+      	}]
       }
     },
 	
@@ -67,7 +71,7 @@ module.exports = function (grunt) {
 			options: {
 				patterns: [
 					// replace the hosted jsapi with the dojo build layer file
-					{ match: /\/\/js.arcgis.com\/3.16\/"/g, replacement: 'js/dojo/dojo.js"'},
+					{ match: /\/\/js.arcgis.com\/4.3\/"/g, replacement: 'js/dojo/dojo.js"'},
 					// remove the reference to your app package
 					{ match: /\/\/ DELETE FROM HERE[\s\S]*\/\/ TO HERE/, replacement: ''},
 					// clean up any debug flags to make the app ready for production
@@ -81,15 +85,15 @@ module.exports = function (grunt) {
     dojo: {
       dist: {
         options: {
-          profile: 'build/buildProject.profile.js'
+          profile: '../../build/buildProject.profile.js'
         }
       },
       options: {
-        dojo: 'web/js/dojo/dojo.js',
+        dojo: './dojo/dojo.js',
         load: 'build',
-		releaseDir: './dist/js',
-        cwd: './',
-        basePath: './'
+		releaseDir: '.',
+        cwd: './dist/js',
+        basePath: '.'
       }
     },
 	
@@ -166,7 +170,7 @@ module.exports = function (grunt) {
   // Serve dev app locally
   grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
 
-  grunt.registerTask('build', ['clean:build', 'dojo', 'copy', 'replace', 'clean:nonLayer']);
+  grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'replace', 'clean:nonLayer']);
 
   	// JS task
 	grunt.registerTask( 'js', [ 'jshint'] );

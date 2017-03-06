@@ -1,5 +1,6 @@
 dist/
 node_modules/
+arcgis-js-api/
 enterprise-build-sample-js.sublime-project
 enterprise-build-sample-js.sublime-workspace
 web/js/dgrid/
