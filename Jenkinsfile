@@ -6,10 +6,11 @@ node {
 	}
 	
 	stage('prebuild') {
-		docker.image('digitallyseamless/nodejs-bower-grunt').inside {
-			bat 'npm install'
-			
-			bat 'bower install'
-		}
+		npm install
+		bower install
+	}
+	
+	stage('build) {
+		grunt build
 	}
 }
