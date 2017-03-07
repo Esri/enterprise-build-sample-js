@@ -10,7 +10,7 @@ define([
         "dojox/charting/action2d/MoveSlice",
         "dojox/charting/action2d/Tooltip",
         "dojox/charting/themes/MiamiNice",
-        "esri/tasks/query",
+        "esri/tasks/support/Query",
         "esri/tasks/QueryTask",
         //	Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
@@ -74,7 +74,7 @@ define([
 			// Note: The 1 is appended to the entityDistrictUrl to run the query on Districts.
 			//	This can be modified to change the layer.  To run query tasks on multiple layers,
 			//	new query tasks will have to be constructed.
-			this.queryTask = QueryTask(this.config.entityDistrictUrl + "/2");
+			this.queryTask = new QueryTask(this.config.entityDistrictUrl + "/2");
 		},
 		show: function(/*String*/field,/*String*/title,/*Object*/data,/*int*/layerId){
 			//	summary:
@@ -125,7 +125,7 @@ define([
 	        //	Note that dojox.charting does not handle events like other widgets.
 	        if (layerId === 0){
 		        this.chart.connectToPlot("default",lang.hitch(this,function(evt){
-					if (evt.type == "onclick"){
+					if (evt.type === "onclick"){
 						
 						var query = new Query();
 						query.where = "District = '" + evt.chart.series[0].data[evt.index].text + "'";
@@ -141,10 +141,10 @@ define([
 			this.data = data;
 			
 		},
-		zoomToDistrict: function(/*esri.tasks.FeatureSet*/ queryResults){
+		zoomToDistrict: function(/*esri.tasks.support.FeatureSet*/ queryResults){
 			//	summary:
 			//		Zooms in on the district selected after a slice click.
-			//	queryResults:	esri.tasks.FeatureSet
+			//	queryResults:	esri.tasks.support.FeatureSet
 			//		Feature Set containing the result of the slice click's Query.
 			
 			this.map.setExtent(queryResults.features[0].geometry.getExtent(),true);
@@ -152,7 +152,7 @@ define([
 			// Wait for the extent to be changed before showing the new info grid.
 			//	This prevents the info window from being out of the map's extent.
 			on.once(this.map, "extent-change", lang.hitch(this, function () {
-				this.infoGrid.populate(this.map.toScreen(queryResults.features[0].geometry.getExtent().getCenter()),lang.mixin(queryResults,{feature:queryResults.features[0]}));
+				this.infoGrid.populate(queryResults.features[0].geometry.getExtent().getCenter(),lang.mixin(queryResults,{feature:queryResults.features[0]}));
 			}));
 		},
 		hide: function(){

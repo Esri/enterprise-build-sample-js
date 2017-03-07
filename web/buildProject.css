@@ -1,3 +1,16 @@
+html, body { 
+	height: 100%; 
+	width: 100%; 
+	margin: 0; 
+	padding: 0;
+	overflow: hidden; 
+}
+      
+
+#map{
+	padding:0;
+}
+
 .toolbar {
 	background:white;
 	border-style:solid;
@@ -57,3 +70,6 @@
 	padding-left: 10px;z
 }
 
+.flat .dijitTextBox {
+	width: 60px !important;
+}

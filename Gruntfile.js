@@ -5,6 +5,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-replace');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+
+  var port = grunt.option('port') || 8000;
   
   grunt.initConfig({
 	  
@@ -26,9 +31,9 @@ module.exports = function (grunt) {
 			"!dist/js/dojo",
 			"!dist/js/dojo/dojo.js",
 			"!dist/js/dojo/nls/dojo_en-us.js",
-			"!dist/js/dojo/resources",
+			"!dist/js/dojo/resources/**/*",
 			"!dist/**/images/**",
-			"!dist/**/data/**",
+			"!dist/js/data/**",
 			"!dist/js/**/*.gif",
 			"!dist/js/**/*.png",
 			/*"!dist/js/dojox",
@@ -39,21 +44,25 @@ module.exports = function (grunt) {
     },
 	
     copy: {
-      main: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['**/*', '!js/**'],
-          dest: './dist/'
-        }]
-      },
-	  support: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['js/data/**', 'js/images/**'],
-          dest: './dist/'
-        }]
+      prebuild: {
+      	files: [{
+      		expand: true,
+      		cwd: 'web',
+      		src: ['**'],
+      		dest: './dist/'
+      	},
+      	{
+      		expand: true,
+      		cwd: 'arcgis-js-api',
+      		src: ['**'],
+      		dest: './dist/js'
+      	},
+      	{
+      		expand: true,
+      		cwd: './node_modules',
+      		src: ['dojo-themes/**'],
+      		dest: './dist'
+      	}]
       }
     },
 	
@@ -62,7 +71,7 @@ module.exports = function (grunt) {
 			options: {
 				patterns: [
 					// replace the hosted jsapi with the dojo build layer file
-					{ match: /\/\/js.arcgis.com\/3.16\/"/g, replacement: 'js/dojo/dojo.js"'},
+					{ match: /\/\/js.arcgis.com\/4.3\/"/g, replacement: 'js/dojo/dojo.js"'},
 					// remove the reference to your app package
 					{ match: /\/\/ DELETE FROM HERE[\s\S]*\/\/ TO HERE/, replacement: ''},
 					// clean up any debug flags to make the app ready for production
@@ -76,15 +85,15 @@ module.exports = function (grunt) {
     dojo: {
       dist: {
         options: {
-          profile: 'build/buildProject.profile.js'
+          profile: '../../build/buildProject.profile.js'
         }
       },
       options: {
-        dojo: 'web/js/dojo/dojo.js',
+        dojo: './dojo/dojo.js',
         load: 'build',
-		releaseDir: './dist/js',
-        cwd: './',
-        basePath: './'
+		releaseDir: '.',
+        cwd: './dist/js',
+        basePath: '.'
       }
     },
 	
@@ -109,9 +118,61 @@ module.exports = function (grunt) {
 			}
 		  }
 	  }
+	},
+	jshint: {
+		options: {
+			curly: false,
+			eqeqeq: true,
+			immed: true,
+			latedef: true,
+			newcap: true,
+			noarg: true,
+			sub: true,
+			undef: true,
+			eqnull: true,
+			browser: true,
+			expr: true,
+			globals: {
+				head: false,
+				module: false,
+				console: false,
+				unescape: false,
+				define: false,
+				exports: false
+			}
+		},
+		files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ]
+	},
+	connect: {
+	  	server: {
+	  		options: {
+	  			port: port,
+	  			livereload: true,
+	  			open: true,
+	  			base: ['web','node_modules']
+	  		}
+	  	}
+	  },
+	  watch: {
+		options: {
+			livereload: true
+		},
+		js: {
+			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ],
+			tasks: ['js']
+		},
+		html: {
+			files: [ 'web/index.html']
+		}
 	}
   });
 
-  grunt.registerTask('build', ['clean:build', 'dojo', 'copy', 'replace', 'clean:nonLayer']);
+  // Serve dev app locally
+  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+
+  grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'replace', 'clean:nonLayer']);
+
+  	// JS task
+	grunt.registerTask( 'js', [ 'jshint'] );
 
 };

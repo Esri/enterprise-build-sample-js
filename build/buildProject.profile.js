@@ -1,6 +1,7 @@
 
 var profile = {
-	basePath : "../web/js",
+	basePath : ".",
+	releaseDir: "../buildOutput",
 	action: 'release',
 	cssOptimize: 'comments',
 	mini: true,
@@ -12,56 +13,70 @@ var profile = {
 			boot: true, // include AMD loader
 			customBase: true, // don't include all of the globals in dojo/main
 			include: [
-				'dojo/i18n', // this prevents a bunch of extra requests trying to get localization
 				'buildProject/SiteManager',
-				'esri/dijit/Attribution',
+				'esri/portal/support/layersCreator',
 				'dojox/gfx/path',
 				'dojox/gfx/svg',
 				'dojox/gfx/shape',
 				'dojox/gfx/filters',
 				'dojox/gfx/svgext',
-				'dojo/_firebug/firebug'
+				'esri/views/2d/layers/TiledLayerView2D',
+				'esri/views/2d/layers/MapImageLayerView2D'
 			],
 			includeLocales: ['en-us']
-		}		
+		},
+    	'esri/layers/VectorTileLayerImpl': {
+    		include: [
+        		"esri/layers/VectorTileLayerImpl"
+    		],
+      		includeLocales: ["en-us"]
+    	}
 	},
 	packages: [
 		{
 			"name" : "buildProject",
-			"location" : "web/js/buildProject"
+			"location" : "./buildProject"
 		},
 		{
 			"name" : "dojo",
-			"location" : "web/js/dojo"
+			"location" : "./dojo"
 		},
 		{
 			"name" : "dijit",
-			"location" : "web/js/dijit"
+			"location" : "./dijit"
 		},
 		{
 			"name" : "dojox",
-			"location" : "web/js/dojox"
+			"location" : "./dojox"
 		},
 		{
 			"name" : "esri",
-			"location" : "web/js/esri"
+			"location" : "./esri"
 		},
 		{
 			"name" : "dgrid",
-			"location" : "web/js/dgrid"
+			"location" : "./dgrid"
+		},
+		{
+			"name" : "dgrid1",
+			"location" : "./dgrid1"
+		},
+		{
+			"name" : "dstore",
+			"location" : "./dstore"
 		},
 		{
 			"name" : "put-selector",
-			"location" : "web/js/put-selector"
+			"location" : "./put-selector"
 		},
 		{
 			"name": "xstyle",
-			"location" : "web/js/xstyle"
+			"location" : "./xstyle"
 		},
 		// moment package is newly needed for 3.16
 		{
 		  name: 'moment',
-		  location: 'web/js/moment',
+		  location: './moment',
 		  main: 'moment',
 		  trees: [
 			  // don't bother with .hidden, tests, min, src, and templates
