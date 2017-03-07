@@ -6,11 +6,11 @@ node {
 	}
 	
 	stage('prebuild') {
-		npm install
-		bower install
+		sh 'npm install'
+		sh 'bower install'
 	}
 	
 	stage('build') {
-		grunt build
+		sh 'grunt build'
 	}
 }
