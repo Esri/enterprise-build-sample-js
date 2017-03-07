@@ -6,11 +6,11 @@ node {
 	}
 	
 	stage('prebuild') {
-		cmd 'npm install'
-		cmd 'bower install'
+		bat 'npm install'
+		bat 'bower install'
 	}
 	
 	stage('build') {
-		cmd 'grunt build'
+		bat 'grunt build'
 	}
 }
