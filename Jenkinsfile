@@ -11,6 +11,6 @@ node {
 	}
 	
 	stage('build') {
-		bat 'grunt build'
+		bat 'grunt build -verbose'
 	}
 }
