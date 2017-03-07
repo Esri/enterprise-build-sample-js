@@ -10,7 +10,7 @@ node {
 		bower install
 	}
 	
-	stage('build) {
+	stage('build') {
 		grunt build
 	}
 }
