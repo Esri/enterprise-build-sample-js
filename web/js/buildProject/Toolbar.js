@@ -233,10 +233,10 @@ define([
 			//		Clears all graphics from the map.
 			
 			this.view.graphics.removeAll();
-			this._getViewPopup().set("visible",false);
+			this.hidePopup();
 		},
-		_getViewPopup: function(){
-			return this.view.get("popup");
+		hidePopup: function(){
+			this.view.get("popup").set("visible",false);
 		}
 	});
 });
