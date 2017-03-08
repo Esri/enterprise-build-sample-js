@@ -83,26 +83,34 @@ define([
 			//		Turns the street map on and off when the appropriate button is clicked.
 			//		Also makes sure the zip code layer is hidden when the street map is not.
 			
+			
+			this._createStreetMapLayer();
+			
+			if (this.viewingStreets){
+				this._hideStreetMapLayer();
+			} else {
+				this._showStreetMapLayer();
+			}
+			
+			this.viewingStreets = !this.viewingStreets;
+		},
+		_createStreetMapLayer: function(){
 			if (!this.streetMapLayer){
 				this.streetMapLayer = new TileLayer({
 					"url": this.config.transportationUrl,
 					"visible": false
 				});
+				
 				this.map.add(this.streetMapLayer);
 			}
-
-			
-			if (this.viewingStreets){
-				this.streetMapLayer.set("visible",false);
-				this.toggleStreetsButton.set("label","Show Transportation");
-				dom.byId("map").style.backgroundColor = "white";
-			} else {
-				this.streetMapLayer.set("visible",true);
-				this.toggleStreetsButton.set("label","Hide Transportation");
-				dom.byId("map").style.backgroundColor = "black";
-			}
-			
-			this.viewingStreets = !this.viewingStreets;
+		},
+		_hideStreetMapLayer: function(){
+			this.streetMapLayer.set("visible",false);
+			this.toggleStreetsButton.set("label","Show Transportation");
+		},
+		_showStreetMapLayer: function(){
+			this.streetMapLayer.set("visible",true);
+			this.toggleStreetsButton.set("label","Hide Transportation");
 		},
 		toggleAssetLayer: function(){
 			//	summary:
@@ -225,7 +233,10 @@ define([
 			//		Clears all graphics from the map.
 			
 			this.view.graphics.removeAll();
-			this.view.get("popup").set("visible",false);
+			this._getViewPopup().set("visible",false);
+		},
+		_getViewPopup: function(){
+			return this.view.get("popup");
 		}
 	});
 });

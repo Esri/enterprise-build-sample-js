@@ -5,3 +5,4 @@ enterprise-build-sample-js.sublime-project
 enterprise-build-sample-js.sublime-workspace
 build-src/
 build-temp/
+Chrome_*/
