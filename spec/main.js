@@ -21,28 +21,22 @@
       // esri/dojo packages
       {
         name: 'dgrid',
-        location: 'http://js.arcgis.com/3.16/dgrid'
+        location: 'http://js.arcgis.com/4.3/dgrid'
       }, {
         name: 'dijit',
-        location: 'http://js.arcgis.com/3.16/dijit'
+        location: 'http://js.arcgis.com/4.3/dijit'
       }, {
         name: 'esri',
-        location: 'http://js.arcgis.com/3.16/esri'
+        location: 'http://js.arcgis.com/4.3/esri'
       }, {
         name: 'dojo',
-        location: 'http://js.arcgis.com/3.16/dojo'
+        location: 'http://js.arcgis.com/4.3/dojo'
       }, {
         name: 'dojox',
-        location: 'http://js.arcgis.com/3.16/dojox'
+        location: 'http://js.arcgis.com/4.3/dojox'
       }, {
-        name: 'put-selector',
-        location: 'http://js.arcgis.com/3.16/put-selector'
-      }, {
-        name: 'util',
-        location: 'http://js.arcgis.com/3.16/util'
-      }, {
-        name: 'xstyle',
-        location: 'http://js.arcgis.com/3.16/xstyle'
+        name: 'moment',
+        location: 'http://js.arcgis.com/4.3/moment'
       }
     ],
     async: true
