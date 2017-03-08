@@ -7,33 +7,15 @@ define([
 ) {
 
   describe('components: Toolbar ', function() {
-    var view = {
-        graphics: {removeAll:function() {graphicsCleared = true;}}
-    },
-	map = {
-		add: function(layer){lastLayerAdded =  layer}
-	},
-
-	graphicsCleared, hiddenInfoWindow, lastLayerAdded, viewSetArg, viewSetVal, toolbar;
+	var testArgs = {
+		"view": {},
+		"config": {},
+		"map": {}
+	};
 
     // create the map
     beforeEach(function() {
-
-		graphicsCleared = false;
-        hiddenInfoWindow = false;
-		popupSetArg = '';
-		popupSetVal = '';
-		
-		Toolbar.prototype._getViewPopup = function(){
-			return {
-				set: function(arg,val){
-					popupSetArg = arg;
-					popupSetVal = val;
-				}
-			}
-		};
-        toolbar = new Toolbar({"id":"toolbar","map":map,"view":view,"config":{transportationUrl:"streetmap"}});
-
+        toolbar = new Toolbar(testArgs);
     });
 
     // destroy the map
@@ -42,11 +24,14 @@ define([
     });
 
 	it('clears graphics and info window', function(done){
+		
+		toolbar.view.graphics = jasmine.createSpyObj('toolbar.view.graphics',["removeAll"]);
+		spyOn(toolbar,"hidePopup");
+
 		toolbar.clearGraphics();
 		
-		expect(graphicsCleared).toBe(true);
-		expect(popupSetArg).toEqual('visible');
-		expect(popupSetVal).toBe(false);
+		expect(toolbar.view.graphics.removeAll).toHaveBeenCalled();
+		expect(toolbar.hidePopup).toHaveBeenCalled();
 		
 	});
 	
@@ -76,11 +61,12 @@ define([
 	});
 	
 	it('created Street Map Layer', function(done){
+		
+		toolbar.map = jasmine.createSpyObj('toolbar.map',['add']);
 		toolbar._createStreetMapLayer();
 		
 		expect(toolbar.streetMapLayer instanceof TileLayer).toBe(true);
-		expect(toolbar.streetMapLayer.url).toEqual('streetmap');
-		expect(lastLayerAdded).toEqual(toolbar.streetMapLayer);		
+		expect(toolbar.map.add).toHaveBeenCalled();
 	});
 
   });
