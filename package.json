@@ -17,6 +17,7 @@
     "grunt-replace": "^0.11.0",
     "karma": "^1.5.0",
     "karma-chrome-launcher": "^0.1.4",
+    "karma-coverage": "^1.1.1",
     "karma-dojo": "0.0.1",
     "karma-jasmine": "^0.1.5",
     "karma-junit-reporter": "^0.3.8"
