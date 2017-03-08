@@ -15,53 +15,44 @@ module.exports = function (grunt) {
 	  
     clean: {
       build: {
-        src: ['dist/']
+        src: ['dist/', 'build-temp/', 'build-src/js/buildProject/']
       },
-      uncompressed: {
-        src: [
-          'dist/**/*.uncompressed.js'
-        ]
-      },
-	  nonLayer: {
-		src: [
-			// Clean out the js folder, except for the layer file
-			'dist/js/**/*',
-			// Exceptions to make sure the layer file(s) stay,
-			// but make the app as small as possible
-			"!dist/js/dojo",
-			"!dist/js/dojo/dojo.js",
-			"!dist/js/dojo/nls/dojo_en-us.js",
-			"!dist/js/dojo/resources/**/*",
-			"!dist/**/images/**",
-			"!dist/js/data/**",
-			"!dist/js/**/*.gif",
-			"!dist/js/**/*.png",
-			/*"!dist/js/dojox",
-			"!dist/js/dojox/gfx",
-			"!dist/js/dojox/gfx/*.js"*/
-		]
-	  }
+      postbuild: ['build-temp/']
     },
 	
     copy: {
       prebuild: {
-      	files: [{
-      		expand: true,
-      		cwd: 'web',
-      		src: ['**'],
-      		dest: './dist/'
-      	},
+      	files: [
+      	// copy project packages from src to build-src
       	{
       		expand: true,
-      		cwd: 'arcgis-js-api',
+      		cwd: 'web/js/buildProject',
       		src: ['**'],
-      		dest: './dist/js'
+      		dest: './build-src/js/buildProject'
       	},
+      	// copy project non-package artifacts direct to dist 
+      	{
+      		expand: true,
+      		cwd: 'web',
+      		src: ['*', 'js/data/**', 'js/images/**'],
+      		dest: './dist/'
+      	},
+      	// copy project node dependecies to dist
       	{
       		expand: true,
       		cwd: './node_modules',
       		src: ['dojo-themes/**'],
       		dest: './dist'
+      	}]
+      },
+      // copy all the layer files specified in the profile.js 
+      // created by the dojo build to the dist dir
+      postbuild: {
+      	files: [{
+      		expand: true,
+      		cwd: 'build-temp/js',
+      		src: ['dojo/dojo.js', 'esri/layers/VectorTileLayerImpl.js'],
+      		dest: './dist/js'
       	}]
       }
     },
@@ -91,8 +82,8 @@ module.exports = function (grunt) {
       options: {
         dojo: './dojo/dojo.js',
         load: 'build',
-		releaseDir: '.',
-        cwd: './dist/js',
+		releaseDir: '../../build-temp/js',
+        cwd: './build-src/js',
         basePath: '.'
       }
     },
@@ -170,7 +161,7 @@ module.exports = function (grunt) {
   // Serve dev app locally
   grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
 
-  grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'replace', 'clean:nonLayer']);
+  grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'copy:postbuild', 'replace', 'clean:postbuild']);
 
   	// JS task
 	grunt.registerTask( 'js', [ 'jshint'] );
