@@ -163,6 +163,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'copy:postbuild', 'replace', 'clean:postbuild']);
 
+  grunt.registerTask('test', ['jshint', 'karma']);
+
   	// JS task
 	grunt.registerTask( 'js', [ 'jshint'] );
 
