@@ -23,7 +23,7 @@ define([
       toolbar.destroy();
     });
 
-	it('clears graphics and info window', function(done){
+	it('clears graphics and popup', function(done){
 		
 		toolbar.view.graphics = jasmine.createSpyObj('toolbar.view.graphics',["removeAll"]);
 		spyOn(toolbar,"hidePopup");
@@ -33,6 +33,15 @@ define([
 		expect(toolbar.view.graphics.removeAll).toHaveBeenCalled();
 		expect(toolbar.hidePopup).toHaveBeenCalled();
 		
+	});
+	
+	it('hides the popup', function(done){
+		toolbar.view.popup = jasmine.createSpyObj('toolbar.view.popup',['set']);
+		
+		toolbar.hidePopup();
+		
+		expect(toolbar.view.popup.set).toHaveBeenCalled();
+		expect(toolbar.view.popup.set.calls[0].args).toEqual(['visible',false]);
 	});
 	
 	it('toggles street map', function(done){

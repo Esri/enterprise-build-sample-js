@@ -76,12 +76,14 @@ define([
 			//	description:
 			//		Runs after the widget is completely formed.  Sets up the floating behavior.
 			
+			this.makeToolbarDraggable();
+		},
+		makeToolbarDraggable: function(){
 			var moveable = new Moveable(this.domNode,{handle:this.header});
 		},
 		toggleStreetMap: function(){
 			//	summary:
 			//		Turns the street map on and off when the appropriate button is clicked.
-			//		Also makes sure the zip code layer is hidden when the street map is not.
 			
 			
 			this._createStreetMapLayer();
@@ -167,6 +169,15 @@ define([
 			
 			this.viewingAssets = !this.viewingAssets;
 		},
+		
+		/**********************************
+		 ** THIS FUNCTION (enableAssetConnect)
+		 ** IS POORLY DESIGNED
+		 ** AND REALLY HARD TO TEST!
+		 **
+		 **    CAN YOU MAKE IT BETTER?
+		 **********************************/
+		 
 		enableAssetConnect: function(){
 			//	summary:
 			//		Enables the identify connect behavior for asset layers.
@@ -236,7 +247,7 @@ define([
 			this.hidePopup();
 		},
 		hidePopup: function(){
-			this.view.get("popup").set("visible",false);
+			this.view.popup.set("visible",false);
 		}
 	});
 });

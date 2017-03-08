@@ -19,6 +19,10 @@ define([
 			makeToolbarDraggable: function(){
 			},
 			toggleTransportation: function(){
+				if (!this.transportationLayer){
+					this.createTransportationLayer();
+				}
+				
 				if(this.isTransportationVisible()){
 					this.hideTransportation();
 				} else {
@@ -32,6 +36,10 @@ define([
 			showTransportation: function(){
 			},
 			toggleAssetsButton: function(){
+				if (!this.assetsLayer){
+					this.createAssetsLayer();
+				}
+				
 				if (this.areAssetsVisible()){
 					this.hideAssets();
 				} else {
