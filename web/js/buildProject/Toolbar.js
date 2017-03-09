@@ -7,11 +7,11 @@ define([
         "dojo/dom",
         "dojo/on",
         "dojo/dnd/Moveable",
-        "esri/InfoTemplate",
-        "esri/layers/ArcGISDynamicMapServiceLayer",
-        "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/PopupTemplate",
+        "esri/layers/MapImageLayer",
+        "esri/layers/TileLayer",
         "esri/symbols/SimpleMarkerSymbol",
-        "esri/tasks/IdentifyParameters",
+        "esri/tasks/support/IdentifyParameters",
         "esri/tasks/IdentifyTask",
         // 	Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
@@ -31,9 +31,9 @@ define([
 		dom,
 		on,
 		Moveable,
-		InfoTemplate,
-		ArcGISDynamicMapServiceLayer,
-		ArcGISTiledMapServiceLayer,
+		PopupTemplate,
+		MapImageLayer,
+		TileLayer,
 		SimpleMarkerSymbol,
 		IdentifyParameters,
 		IdentifyTask,
@@ -48,7 +48,7 @@ define([
 		//		Toolbar widget.  Also handles the activation of several tools.
 		//	templateString:	String
 		//		HTML template of the widget (imported using dojo/text)
-		//	streetMapLayer:	esri.layers.ArcGISTiledMapServiceLayer
+		//	streetMapLayer:	esri.layers.TileLayer
 		//		Transportation layer to be displayed on Toggle Streets
 		//	viewingStreets:	boolean
 		//		Flag to keep track of which layers should be on the map
@@ -83,25 +83,34 @@ define([
 			//		Turns the street map on and off when the appropriate button is clicked.
 			//		Also makes sure the zip code layer is hidden when the street map is not.
 			
-			if (!this.streetMapLayer){
-				this.streetMapLayer = new ArcGISTiledMapServiceLayer(this.config.transportationUrl);
-				this.map.addLayer(this.streetMapLayer);
-				this.streetMapLayer.hide();
-			}
+			
+			this._createStreetMapLayer();
 			
 			if (this.viewingStreets){
-				this.streetMapLayer.hide();
-				this.map.getLayer("entityDistrictLayer").show();
-				this.toggleStreetsButton.set("label","Show Transportation");
-				dom.byId("map").style.backgroundColor = "white";
+				this._hideStreetMapLayer();
 			} else {
-				this.streetMapLayer.show();
-				this.map.getLayer("entityDistrictLayer").hide();
-				this.toggleStreetsButton.set("label","Hide Transportation");
-				dom.byId("map").style.backgroundColor = "black";
+				this._showStreetMapLayer();
 			}
 			
 			this.viewingStreets = !this.viewingStreets;
+		},
+		_createStreetMapLayer: function(){
+			if (!this.streetMapLayer){
+				this.streetMapLayer = new TileLayer({
+					"url": this.config.transportationUrl,
+					"visible": false
+				});
+				
+				this.map.add(this.streetMapLayer);
+			}
+		},
+		_hideStreetMapLayer: function(){
+			this.streetMapLayer.set("visible",false);
+			this.toggleStreetsButton.set("label","Show Transportation");
+		},
+		_showStreetMapLayer: function(){
+			this.streetMapLayer.set("visible",true);
+			this.toggleStreetsButton.set("label","Hide Transportation");
 		},
 		toggleAssetLayer: function(){
 			//	summary:
@@ -113,22 +122,30 @@ define([
 			//		used for click to identify.
 			
 			if (!this.assetLayer){
-				this.assetLayer = new ArcGISDynamicMapServiceLayer(this.config.assetsUrl);
-				this.assetLayer.setVisibleLayers([0]);
-				this.map.addLayer(this.assetLayer);
+				this.assetLayer = new MapImageLayer({
+					"url": this.config.assetsUrl,
+					"sublayers": [
+						{
+							id: 0,
+							visible: true
+						}
+					]
+				});
+
+				this.map.add(this.assetLayer);
 			}
 			if (this.viewingAssets){
 				
-				if (this.map.getLevel() < 6){
+				if (this.view.get("zoom") < 6){
 					this.toggleAssetsButton.set("disabled",true);
 				}
-				this.assetLayer.hide();
+				this.assetLayer.set("visible",false);
 				this.toggleAssetsButton.set("label","Show Assets");
 				this.disableAssetConnect();
 				kernel.global.site.enableIdentifyConnect();
 				
 			} else {
-				this.assetLayer.show();
+				this.assetLayer.set("visible",true);
 				this.toggleAssetsButton.set("label","Hide Assets");
 				
 				if (!this.identifyTask){
@@ -161,20 +178,22 @@ define([
 				this.identifyParams.geometry = evt.mapPoint;
 				this.identifyParams.mapExtent = this.map.extent;
 				
-				// when the identify task is completed we pop up an info window for the given asset.
+				// when the identify task is completed we create a poopup for the given asset.
 				this.identifyTask.execute(this.identifyParams,lang.hitch(this,function(identifyResults){
 					if (identifyResults.length === 0){
 						buildProject.displayError("No assets found at click location");
 					} else {
 						var feature = identifyResults[0].feature;
-						feature.setSymbol = new SimpleMarkerSymbol();
-						feature.setInfoTemplate(new InfoTemplate({"title":"Asset","content":"${*}"}));
+						feature.set("symbol",new SimpleMarkerSymbol());
+						feature.set("popupTemplate",new PopupTemplate({"title":"Asset","content":"${*}"}));
 						
-						this.map.graphics.add(feature);
+						this.view.graphics.add(feature);
 						var screenPt = this.map.toScreen(feature.geometry);
-						this.map.infoWindow.setTitle("Asset");
-						this.map.infoWindow.setContent(feature.getContent());
-						this.map.infoWindow.show(screenPt,this.map.getInfoWindowAnchor(screenPt));
+
+						var popup = this.view.get("popup");
+						popup.set("title","Asset");
+						popup.set("content",feature.getContent());
+						popup.show(screenPt,this.map.getInfoWindowAnchor(screenPt));
 					}
 				}),buildProject.displayError);
 			}));
@@ -185,7 +204,7 @@ define([
 			//	summary:
 			//		Disables the identify connect behavior for asset layers.
 			
-			this.map.infoWindow.hide();
+			this.view.get("popup").set("visible",false);
 			this.assetConnect.remove();
 		},
 		toggleTravelRingTool: function(){
@@ -193,7 +212,11 @@ define([
 			//		Turns the travel ring tool on and off when the appropriate button is clicked.
 			
 			if (!this.travelRingTool){
-				this.travelRingTool = new TravelRingTool({map:this.map,config:this.config,toolbar:this});
+				this.travelRingTool = new TravelRingTool({
+					map:this.map,
+					config:this.config,
+					toolbar:this,
+					"view": this.view});
 			}
 			if (this.travelRingTool.isActive){
 				this.toggleTravelRingButton.containerNode.style.fontWeight = "";
@@ -209,8 +232,11 @@ define([
 			//	summary:
 			//		Clears all graphics from the map.
 			
-			this.map.graphics.clear();
-			this.map.infoWindow.hide();
+			this.view.graphics.removeAll();
+			this.hidePopup();
+		},
+		hidePopup: function(){
+			this.view.get("popup").set("visible",false);
 		}
 	});
 });

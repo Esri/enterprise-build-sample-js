@@ -10,7 +10,7 @@ define([
         "dojox/charting/action2d/MoveSlice",
         "dojox/charting/action2d/Tooltip",
         "dojox/charting/themes/MiamiNice",
-        "esri/tasks/query",
+        "esri/tasks/support/Query",
         "esri/tasks/QueryTask",
         //	Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
@@ -141,10 +141,10 @@ define([
 			this.data = data;
 			
 		},
-		zoomToDistrict: function(/*esri.tasks.FeatureSet*/ queryResults){
+		zoomToDistrict: function(/*esri.tasks.support.FeatureSet*/ queryResults){
 			//	summary:
 			//		Zooms in on the district selected after a slice click.
-			//	queryResults:	esri.tasks.FeatureSet
+			//	queryResults:	esri.tasks.support.FeatureSet
 			//		Feature Set containing the result of the slice click's Query.
 			
 			this.map.setExtent(queryResults.features[0].geometry.getExtent(),true);
@@ -152,7 +152,7 @@ define([
 			// Wait for the extent to be changed before showing the new info grid.
 			//	This prevents the info window from being out of the map's extent.
 			on.once(this.map, "extent-change", lang.hitch(this, function () {
-				this.infoGrid.populate(this.map.toScreen(queryResults.features[0].geometry.getExtent().getCenter()),lang.mixin(queryResults,{feature:queryResults.features[0]}));
+				this.infoGrid.populate(queryResults.features[0].geometry.getExtent().getCenter(),lang.mixin(queryResults,{feature:queryResults.features[0]}));
 			}));
 		},
 		hide: function(){

@@ -10,56 +10,51 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 
   var port = grunt.option('port') || 8000;
-  var base = grunt.option('base') || 'web';
   
   grunt.initConfig({
 	  
     clean: {
       build: {
-        src: ['dist/']
+        src: ['dist/', 'build-temp/', 'build-src/js/buildProject/']
       },
-      uncompressed: {
-        src: [
-          'dist/**/*.uncompressed.js'
-        ]
-      },
-	  nonLayer: {
-		src: [
-			// Clean out the js folder, except for the layer file
-			'dist/js/**/*',
-			// Exceptions to make sure the layer file(s) stay,
-			// but make the app as small as possible
-			"!dist/js/dojo",
-			"!dist/js/dojo/dojo.js",
-			"!dist/js/dojo/nls/dojo_en-us.js",
-			"!dist/js/dojo/resources",
-			"!dist/**/images/**",
-			"!dist/**/data/**",
-			"!dist/js/**/*.gif",
-			"!dist/js/**/*.png",
-			/*"!dist/js/dojox",
-			"!dist/js/dojox/gfx",
-			"!dist/js/dojox/gfx/*.js"*/
-		]
-	  }
+      postbuild: ['build-temp/'],
+      test: ['test-reports/, coverage/']
     },
 	
     copy: {
-      main: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['**/*', '!js/**'],
-          dest: './dist/'
-        }]
+      prebuild: {
+      	files: [
+      	// copy project packages from src to build-src
+      	{
+      		expand: true,
+      		cwd: 'web/js/buildProject',
+      		src: ['**'],
+      		dest: './build-src/js/buildProject'
+      	},
+      	// copy project non-package artifacts direct to dist 
+      	{
+      		expand: true,
+      		cwd: 'web',
+      		src: ['*', 'js/data/**', 'js/images/**'],
+      		dest: './dist/'
+      	},
+      	// copy project node dependecies to dist
+      	{
+      		expand: true,
+      		cwd: './node_modules',
+      		src: ['dojo-themes/**'],
+      		dest: './dist'
+      	}]
       },
-	  support: {
-        files: [{
-          expand: true,
-          cwd: 'web/',
-          src: ['js/data/**', 'js/images/**'],
-          dest: './dist/'
-        }]
+      // copy all the layer files specified in the profile.js 
+      // created by the dojo build to the dist dir
+      postbuild: {
+      	files: [{
+      		expand: true,
+      		cwd: 'build-temp/js',
+      		src: ['dojo/dojo.js', 'esri/layers/VectorTileLayerImpl.js'],
+      		dest: './dist/js'
+      	}]
       }
     },
 	
@@ -68,7 +63,7 @@ module.exports = function (grunt) {
 			options: {
 				patterns: [
 					// replace the hosted jsapi with the dojo build layer file
-					{ match: /\/\/js.arcgis.com\/3.16\/"/g, replacement: 'js/dojo/dojo.js"'},
+					{ match: /\/\/js.arcgis.com\/4.3\/"/g, replacement: 'js/dojo/dojo.js"'},
 					// remove the reference to your app package
 					{ match: /\/\/ DELETE FROM HERE[\s\S]*\/\/ TO HERE/, replacement: ''},
 					// clean up any debug flags to make the app ready for production
@@ -82,15 +77,15 @@ module.exports = function (grunt) {
     dojo: {
       dist: {
         options: {
-          profile: 'build/buildProject.profile.js'
+          profile: '../../build/buildProject.profile.js'
         }
       },
       options: {
-        dojo: 'web/js/dojo/dojo.js',
+        dojo: './dojo/dojo.js',
         load: 'build',
-		releaseDir: './dist/js',
-        cwd: './',
-        basePath: './'
+		releaseDir: '../../build-temp/js',
+        cwd: './build-src/js',
+        basePath: '.'
       }
     },
 	
@@ -106,6 +101,7 @@ module.exports = function (grunt) {
 	  unit: {
 		  options:{
 			singleRun: true,
+			captureTimeout:30000,
 			reporters : ['junit', 'coverage'],
 			junitReporter: {
 			  outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml 
@@ -144,9 +140,9 @@ module.exports = function (grunt) {
 	  	server: {
 	  		options: {
 	  			port: port,
-	  			base: base,
 	  			livereload: true,
-	  			open: true
+	  			open: true,
+	  			base: ['web','node_modules']
 	  		}
 	  	}
 	  },
@@ -167,7 +163,9 @@ module.exports = function (grunt) {
   // Serve dev app locally
   grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
 
-  grunt.registerTask('build', ['clean:build', 'dojo', 'copy', 'replace', 'clean:nonLayer']);
+  grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'copy:postbuild', 'replace', 'clean:postbuild']);
+
+  grunt.registerTask('test', ['jshint', 'karma']);
 
   	// JS task
 	grunt.registerTask( 'js', [ 'jshint'] );

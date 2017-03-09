@@ -6,8 +6,8 @@ define([
         "dojo/dom-construct",
         "dojo/data/ItemFileReadStore",
         "dojox/grid/DataGrid",
-        "esri/graphic",
-        "esri/InfoTemplate",
+        "esri/Graphic",
+        "esri/PopupTemplate",
         "esri/symbols/SimpleFillSymbol",
         //	Our Project's classes ---------------------------------------------
         "buildProject/buildProject",
@@ -26,7 +26,7 @@ define([
 		ItemFileReadStore,
 		DataGrid,
 		Graphic,
-		InfoTemplate,
+		PopupTemplate,
 		SimpleFillSymbol,
 		buildProject,
 		ChartingPane,
@@ -36,7 +36,7 @@ define([
 		template) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		//	summary:
-		//		Chart to be displayed in the map's InfoWindow.
+		//		Chart to be displayed in the map views's Popup.
 		//	templateString:	String
 		//		HTML template of the widget (imported using dojo/text)
 		//	store:	dojo.data.ItemFileReadStore
@@ -50,14 +50,17 @@ define([
 		grid: null,
 		setup: false,
 		identifyResults: null,
-		populate: function(/*Event*/clickEvt,/*esri.tasks.IdentifyResult[]*/identifyResults){
+		populate: function(/*Event*/point,/*Object*/response){
 			//	summary:
 			//		Destroys the old chart and calls for the data object to populate a new one.
-			//	clickEvt:	Event
-			//		Click event created by click to identify.
+			//	point:	esri.geometry.Point
+			//		Location of click event
 			//	identifyResults:	esri.tasks.IdentifyResult[]
 			//		Results returned from SiteManager's identify task.
+
+			var identifyResults = response.results;
 			
+			try{
 			//	Make sure results exist
 			if ((identifyResults.length && identifyResults.length > 0) || identifyResults.length === undefined) {
 				if (identifyResults[0]){
@@ -65,8 +68,8 @@ define([
 				} else {
 					this.identifyResults = identifyResults;
 				}
-				this.map.graphics.clear();
-				this.map.infoWindow.hide();
+				this.view.graphics.removeAll();
+				this.view.get("popup").set("visible",false);
 				
 				//	Destroy the grid and store since dojox is strange.
 				if (this.grid){
@@ -80,18 +83,21 @@ define([
 				xhr.get({
 				    url: require.toUrl("data/sampleData.json"),
 				    handleAs: "json",
-				    load: lang.partial(dojo.hitch(this,this._finalPopulate),clickEvt),
+				    load: lang.partial(dojo.hitch(this,this._finalPopulate),point),
 				    error: buildProject.displayError
 				  }, true);
 			} else {
 				buildProject.displayError("No results were returned from identify.");
 			}
+		} catch(e){
+			console.debug("ERROR",e);
+		}
 		},
-		_finalPopulate: function(/*Event*/clickEvt,/*Object*/jsonResults){
+		_finalPopulate: function(/*esri.geometry.Point*/point,/*Object*/jsonResults){
 			//	summary:
 			//		Finishes creating the chart. Called when the data object is returned from the server.
-			//	clickEvt:	Event
-			//		Click event created by click to identify.
+			//	point:	esri.geometry.Point
+			//		Point of map click event
 			//	jsonResults:	Object
 			//		Data returned from the server.
 			
@@ -122,20 +128,22 @@ define([
 				"width":"auto" }];
 			
 			var feature = this.identifyResults.feature;
+			var graphic = new Graphic({
+				"geometry": feature.geometry,
+				"symbol": new SimpleFillSymbol(),
+				"attributes": feature.attributes
+			});
+			this.view.graphics.add(graphic);
 			
-			var graphic = new Graphic(feature.geometry,new SimpleFillSymbol(),feature.attributes,new InfoTemplate({"title":"Identify Results","content":"${*}"}));
-			this.map.graphics.add(graphic);
+			// Setup the popup so that it can hold the datagrid.
+			var popup = this.view.get("popup");
 			
-			// Setup the infowindow so that it can hold the datagrid.
-			var infoWindow = this.map.infoWindow;
-			
-			infoWindow.setTitle(graphic.attributes[this.identifyResults.displayFieldName]);
-			if (!this.setup){
-				infoWindow.setContent(this.domNode);
-				this.setup = true;
-			}
-			var screenPt = clickEvt;
-			infoWindow.show(screenPt,this.map.getInfoWindowAnchor(screenPt));
+			popup.set("title",graphic.attributes[this.identifyResults.displayFieldName]);
+			popup.set("content",this.domNode);
+
+			popup.open({
+				"location": point
+			});
 			
 			this.grid = new DataGrid({
 				store: this.store,
