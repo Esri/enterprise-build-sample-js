@@ -18,7 +18,7 @@ module.exports = function (grunt) {
         src: ['dist/', 'build-temp/', 'build-src/js/buildProject/']
       },
       postbuild: ['build-temp/'],
-      test: ['test-reports/']
+      test: ['test-reports/, coverage/']
     },
 	
     copy: {
