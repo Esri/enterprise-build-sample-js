@@ -2,7 +2,7 @@
 define([
         "dojo/_base/declare",
 		"dojo/on",
-		"dojo/_base/lang",
+		"dojo/_base/lang"
 		], 
 		function(declare, on, lang) {
 			return {
