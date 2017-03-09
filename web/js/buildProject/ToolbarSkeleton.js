@@ -47,7 +47,7 @@ define([
 				showAssets: function(){
 				},
 				toggleTravelRingTool: function(){
-					if (isTravelRingToolActive()){
+					if (this.isTravelRingToolActive()){
 						this.activateTravelRingTool();
 					} else {
 						this.deactivateTravelRingTool();
