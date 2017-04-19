@@ -1,6 +1,6 @@
 # enterprise-build-sample-js
 
-This sample application shows how to run a dojo build on a 3.x ArcGIS API for JavaScript application to get it ready for production. The sample intends for bower to be used for dependency management to download the ArcGIS API for JavaScript, dojo, and other dependencies and grunt to run the dojo build (both of which depend on Node.js). This sample is using the 3.14 version of the ArcGIS API for JavaScript. Updated bower files for newer versions of the ArcGIS API for JavaScript can be found at [https://github.com/Esri/jsapi-resources](https://github.com/Esri/jsapi-resources).
+This sample application shows how to run a dojo build on a 4.x ArcGIS API for JavaScript application to get it ready for production. The sample intends for bower to be used for dependency management to download the ArcGIS API for JavaScript, dojo, and other dependencies and grunt to run the dojo build (both of which depend on Node.js). This sample is using the 4.3 version of the ArcGIS API for JavaScript. Updated bower files for newer versions of the ArcGIS API for JavaScript can be found at [https://github.com/Esri/jsapi-resources](https://github.com/Esri/jsapi-resources).
 
 ![App](enterprise-build-sample-js.png?raw=true)
 
@@ -41,6 +41,8 @@ This sample application shows how to run a dojo build on a 3.x ArcGIS API for Ja
 * [Dojo Build Process Tutoiral](http://dojotoolkit.org/documentation/tutorials/1.10/build/)
 * [ArcGIS Blog](http://blogs.esri.com/esri/arcgis/)
 * [twitter@esri](http://twitter.com/esri)
+* [Dev Summit 2017 Build Presentation](https://www.youtube.com/watch?v=3H_de4pAs70)
+* [Dev Summit 2017 Testing Presentation](https://www.youtube.com/watch?v=QJIQxx79MhE)
 
 ## Issues
 
