@@ -4,13 +4,9 @@ node {
 	stage('checkout') {
 		checkout scm
 	}
-	
-	stage('prebuild') {
+	stage('build') {
 		bat 'npm install'
 		bat 'bower install'
-	}
-	
-	stage('build') {
 		bat 'grunt build -verbose'
 	}
 }

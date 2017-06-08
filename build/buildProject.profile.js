@@ -3,7 +3,7 @@ var profile = {
 	basePath : ".",
 	releaseDir: "../buildOutput",
 	action: 'release',
-	cssOptimize: 'comments',
+	cssOptimize: false,
 	mini: true,
 	optimize: 'closure',
 	layerOptimize: 'closure',

@@ -1,28 +1,21 @@
 define([
   'buildProject/Toolbar',
-  'esri/layers/ArcGISTiledMapServiceLayer'
+  'esri/layers/TileLayer'
 ], function(
   Toolbar,
-  ArcGISTiledMapServiceLayer
+  TileLayer
 ) {
 
-  ArcGISTiledMapServiceLayer.prototype.hide = function(){this.calledHide = true;};
-
   describe('components: Toolbar ', function() {
-    var map = {
-        graphics: {clear:function() {graphicsCleared = true;}},
-        infoWindow: {hide:function() {hiddenInfoWindow = true;}},
-		addLayer: function(layer){lastLayerAdded =  layer}
-    }, graphicsCleared, hiddenInfoWindow, lastLayerAdded, toolbar;
+	var testArgs = {
+		"view": {},
+		"config": {},
+		"map": {}
+	};
 
     // create the map
     beforeEach(function() {
-
-		graphicsCleared = false;
-        hiddenInfoWindow = false;
-
-        toolbar = new Toolbar({"id":"toolbar","map":map,"config":{transportationUrl:"streetmap"}});
-
+        toolbar = new Toolbar(testArgs);
     });
 
     // destroy the map
@@ -31,10 +24,14 @@ define([
     });
 
 	it('clears graphics and info window', function(done){
+		
+		toolbar.view.graphics = jasmine.createSpyObj('toolbar.view.graphics',["removeAll"]);
+		spyOn(toolbar,"hidePopup");
+
 		toolbar.clearGraphics();
 		
-		expect(graphicsCleared).toBe(true);
-		expect(hiddenInfoWindow).toBe(true);
+		expect(toolbar.view.graphics.removeAll).toHaveBeenCalled();
+		expect(toolbar.hidePopup).toHaveBeenCalled();
 		
 	});
 	
@@ -44,38 +41,32 @@ define([
 		var hideStreetMapCounter = 0;
 		var showStreetMapCounter = 0;
 
-		toolbar._createStreetMapLayer = function(){
-		  toolbar.streetMapLayer = true;
-		};
-		toolbar._hideStreetMapLayer = function(){
-		  hideStreetMapCounter++;
-		};
-		toolbar._showStreetMapLayer = function(){
-		  showStreetMapCounter++;
-		};
-
+		
+		spyOn(toolbar,"_createStreetMapLayer");
+		spyOn(toolbar,"_hideStreetMapLayer");
+		spyOn(toolbar,"_showStreetMapLayer");
+		
 		toolbar.toggleStreetMap();
 			
-		expect(toolbar.streetMapLayer).toBe(true);
-		expect(showStreetMapCounter).toEqual(1);
+		expect(toolbar._createStreetMapLayer).toHaveBeenCalled();
+		expect(toolbar._showStreetMapLayer).toHaveBeenCalled();
 		
 		toolbar.toggleStreetMap();
 		
-		expect(hideStreetMapCounter).toEqual(1);
+		expect(toolbar._hideStreetMapLayer).toHaveBeenCalled();
 		
 		toolbar.toggleStreetMap();
-		expect(showStreetMapCounter).toEqual(2);
+		expect(toolbar._showStreetMapLayer).toHaveBeenCalled();
 		
 	});
 	
 	it('created Street Map Layer', function(done){
+		
+		toolbar.map = jasmine.createSpyObj('toolbar.map',['add']);
 		toolbar._createStreetMapLayer();
 		
-		expect(toolbar.streetMapLayer instanceof ArcGISTiledMapServiceLayer).toBe(true);
-		expect(toolbar.streetMapLayer.url).toEqual('streetmap');
-		expect(lastLayerAdded).toEqual(toolbar.streetMapLayer);
-		expect(toolbar.streetMapLayer.calledHide).toBe(true);
-		
+		expect(toolbar.streetMapLayer instanceof TileLayer).toBe(true);
+		expect(toolbar.map.add).toHaveBeenCalled();
 	});
 
   });
