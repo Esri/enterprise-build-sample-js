@@ -5,9 +5,13 @@ node {
 		checkout scm
 	}
 	stage('test') {
-		bat 'npm install'
-		bat 'grunt test'
-		step([$class: 'JUnitResultArchiver', testResults: 'test-reports/**/*.xml'])
+		steps {
+			bat 'npm install'
+			bat 'grunt test'
+		}
+		post {
+			junit 'test-reports/**/*.xml'
+		}
 	}
 	stage('build') {
 		bat 'npm install'
