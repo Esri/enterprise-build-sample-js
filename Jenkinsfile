@@ -1,26 +1,42 @@
-#!groovy
-
-node {
-	stage('checkout') {
-		checkout scm
+pipeline {
+	agent {
+		label: 'windows'
 	}
-	stage('test') {
-		steps {
-			bat 'npm install'
-			bat 'grunt test'
+	stages {
+		stage('checkout') {
+			steps {
+				checkout scm
+			}
 		}
-		post {
-			junit 'test-reports/**/*.xml'
+		stage('test') {
+			steps {
+				bat 'npm install'
+				bat 'grunt test'
+			}
+			post {
+				junit 'test-reports/**/*.xml'
+			}
+		}
+		stage('build') {
+			steps {
+				bat 'npm install'
+				bat 'bower install'
+				bat 'grunt build zip'
+			}
+			post {
+				stash includes: '*.war', name: 'app'
+			}
+		}
+		stage('deploy') {
+			steps {
+				unstash 'app'
+				bat 'grunt deploy'
+			}
 		}
 	}
-	stage('build') {
-		bat 'npm install'
-		bat 'bower install'
-		bat 'grunt build zip'
-		stash includes: '*.war', name: 'app'
-	}
-	stage('deploy') {
-		unstash 'app'
-		bat 'grunt deploy'
+	post {
+		failure {
+			mail to: randy_jones@esri.com, subject: 'The Pipeline failed'
+		}
 	}
 }
