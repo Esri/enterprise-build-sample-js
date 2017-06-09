@@ -172,18 +172,16 @@ module.exports = function (grunt) {
       war:  'sample.war',
       deploy: '/manager/text/deploy',
       undeploy: '/manager/text/undeploy'
-    }
-  });
+    },
 
-    // Adding task registration for zip b/c the tomcat task does the horrible thing of overwriting
-    // the zip config
-    var zip = grunt.config('zip');
-    zip.war = {
-    cwd: 'dist',
-    dest: 'sample.war',
-    src: ['dist/**']
-    };
-    grunt.config('zip', zip);
+    zip: {
+    	war: {
+		    cwd: 'dist',
+		    dest: 'sample.war',
+		    src: ['dist/**']
+	    }
+	}
+  });
 
   // Serve dev app locally
   grunt.registerTask('serve', [ 'connect', 'watch' ]);
