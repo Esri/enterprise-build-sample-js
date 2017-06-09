@@ -7,7 +7,7 @@ node {
 	stage('build') {
 		bat 'npm install'
 		bat 'bower install'
-		bat 'grunt build -verbose'
+		bat 'grunt build zip -verbose'
 	}
 	stage('deploy') {
 		unstash 'app'

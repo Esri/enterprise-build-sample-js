@@ -185,13 +185,15 @@ module.exports = function (grunt) {
     grunt.config('zip', zip);
 
   // Serve dev app locally
-  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+  grunt.registerTask('serve', [ 'connect', 'watch' ]);
 
   grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'copy:postbuild', 'replace', 'clean:postbuild']);
 
+  grunt.registerTask('deploy', ['tomcat_deploy']);
+
   grunt.registerTask('test', ['jshint', 'karma']);
 
-  	// JS task
-	grunt.registerTask( 'js', [ 'jshint'] );
+  // JS task
+  grunt.registerTask('js', [ 'jshint']);
 
 };
