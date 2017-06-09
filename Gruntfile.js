@@ -7,7 +7,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-tomcat-deploy');
 
   var port = grunt.option('port') || 8000;
   
@@ -145,8 +146,8 @@ module.exports = function (grunt) {
 	  			base: ['web','node_modules']
 	  		}
 	  	}
-	  },
-	  watch: {
+	},
+	watch: {
 		options: {
 			livereload: true
 		},
@@ -157,8 +158,31 @@ module.exports = function (grunt) {
 		html: {
 			files: [ 'web/index.html']
 		}
-	}
+	},
+
+    // Tomcat redeploy task still gets its config from tomcat_deploy
+    // config item
+    tomcat_deploy: {
+      host: 'localhost',
+      login: 'tomcat',
+      password: 'tomcat',
+      path: '/sample',
+      port: 8080,
+      war:  'sample.war',
+      deploy: '/manager/text/deploy',
+      undeploy: '/manager/text/undeploy'
+    }
   });
+
+    // Adding task registration for zip b/c the tomcat task does the horrible thing of overwriting
+    // the zip config
+    var zip = grunt.config('zip');
+    zip.war = {
+    cwd: 'dist',
+    dest: 'sample.war',
+    src: ['dist/**']
+    };
+    grunt.config('zip', zip);
 
   // Serve dev app locally
   grunt.registerTask( 'serve', [ 'connect', 'watch' ] );

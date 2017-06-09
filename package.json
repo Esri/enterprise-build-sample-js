@@ -5,7 +5,7 @@
   "main": "Gruntfile.js",
   "devDependencies": {
     "dojo-themes": "^1.12.2",
-    "grunt": "^1.0.0",
+    "grunt": "^0.4.5",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-connect": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
@@ -15,6 +15,8 @@
     "grunt-dojo": "^1.1.2",
     "grunt-karma": "^0.12.1",
     "grunt-replace": "^0.11.0",
+    "grunt-tomcat-deploy": "git://github.com/rsjones/grunt-tomcat-deploy.git",
+    "grunt-zip": "^0.10.2",
     "karma": "^1.5.0",
     "karma-chrome-launcher": "^0.1.4",
     "karma-coverage": "^1.1.1",

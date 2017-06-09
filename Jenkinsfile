@@ -9,4 +9,8 @@ node {
 		bat 'bower install'
 		bat 'grunt build -verbose'
 	}
+	stage('deploy') {
+		unstash 'app'
+		bat 'grunt deploy'
+	}
 }
