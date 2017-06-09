@@ -8,6 +8,7 @@ node {
 		bat 'npm install'
 		bat 'bower install'
 		bat 'grunt build zip -verbose'
+		stash includes: '*.war', name: 'app'
 	}
 	stage('deploy') {
 		unstash 'app'
