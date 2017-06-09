@@ -9,6 +9,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-tomcat-deploy');
+  grunt.loadNpmTasks('grunt-zip');
 
   var port = grunt.option('port') || 8000;
   
