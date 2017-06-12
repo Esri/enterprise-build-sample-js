@@ -1,7 +1,5 @@
 pipeline {
-	agent {
-		label: 'windows'
-	}
+	agent { label 'windows' }
 	stages {
 		stage('checkout') {
 			steps {
@@ -14,7 +12,9 @@ pipeline {
 				bat 'grunt test'
 			}
 			post {
-				junit 'test-reports/**/*.xml'
+				success {
+					junit 'test-reports/**/*.xml'
+				}
 			}
 		}
 		stage('build') {
@@ -24,7 +24,9 @@ pipeline {
 				bat 'grunt build zip'
 			}
 			post {
-				stash includes: '*.war', name: 'app'
+				success {
+					stash includes: '*.war', name: 'app'
+				}
 			}
 		}
 		stage('deploy') {
@@ -36,7 +38,7 @@ pipeline {
 	}
 	post {
 		failure {
-			mail to: 'randy_jones@esri.com', subject: 'The Pipeline failed'
+			mail to: 'randy_jones@esri.com', subject: 'The Pipeline failed', body: 'The Pipeline failed'
 		}
 	}
 }
