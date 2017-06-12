@@ -1,15 +1,10 @@
 pipeline {
 	agent { label 'windows' }
 	stages {
-		stage('checkout') {
-			steps {
-				checkout scm
-			}
-		}
 		stage('test') {
 			steps {
 				bat 'npm install'
-				bat 'grunt test'
+				bat 'grunt test -v'
 			}
 			post {
 				success {
@@ -21,7 +16,7 @@ pipeline {
 			steps {
 				bat 'npm install'
 				bat 'bower install'
-				bat 'grunt build zip'
+				bat 'grunt build zip -v'
 			}
 			post {
 				success {
