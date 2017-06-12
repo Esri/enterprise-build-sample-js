@@ -36,7 +36,7 @@ pipeline {
 	}
 	post {
 		failure {
-			mail to: randy_jones@esri.com, subject: 'The Pipeline failed'
+			mail to: 'randy_jones@esri.com', subject: 'The Pipeline failed'
 		}
 	}
 }
