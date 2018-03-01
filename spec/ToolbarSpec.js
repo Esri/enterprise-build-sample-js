@@ -23,7 +23,7 @@ define([
       toolbar.destroy();
     });
 
-	it('clears graphics and info window', function(done){
+	it('clears graphics and info window', function(){
 		
 		toolbar.view.graphics = jasmine.createSpyObj('toolbar.view.graphics',["removeAll"]);
 		spyOn(toolbar,"hidePopup");
@@ -35,7 +35,7 @@ define([
 		
 	});
 	
-	it('toggles street map', function(done){
+	it('toggles street map', function(){
 		expect(toolbar.viewingStreets).toBe(false);
 		
 		var hideStreetMapCounter = 0;
@@ -60,7 +60,7 @@ define([
 		
 	});
 	
-	it('created Street Map Layer', function(done){
+	it('created Street Map Layer', function(){
 		
 		toolbar.map = jasmine.createSpyObj('toolbar.map',['add']);
 		toolbar._createStreetMapLayer();

@@ -39,7 +39,6 @@
         location: 'http://js.arcgis.com/4.6/moment'
       }
     ],
-    async: true
   };
 
 
