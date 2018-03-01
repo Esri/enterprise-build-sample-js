@@ -6,7 +6,6 @@ define([
         "dojo/_base/xhr",
         "dojo/dom",
         "dojo/on",
-        "dojo/parser",
         "esri/Map",
         "esri/views/MapView",
         "esri/geometry/Extent",
@@ -25,7 +24,6 @@ define([
 		xhr,
 		dom,
 		on,
-		parser,
 		Map,
 		MapView,
 		Extent,
@@ -65,7 +63,6 @@ define([
 			//	summary:
 			//		Loades the flat config file and initializes several widgets.
 			
-			parser.parse();
 			
 			xhr.get({
 				"url": require.toUrl("data/config.json"),

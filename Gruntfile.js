@@ -52,7 +52,7 @@ module.exports = function (grunt) {
       	files: [{
       		expand: true,
       		cwd: 'build-temp/js',
-      		src: ['dojo/dojo.js', 'esri/layers/VectorTileLayerImpl.js'],
+      		src: ['dojo/dojo.js', 'esri/core/workers/worker.js'],
       		dest: './dist/js'
       	}]
       }
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
 			options: {
 				patterns: [
 					// replace the hosted jsapi with the dojo build layer file
-					{ match: /\/\/js.arcgis.com\/4.3\/"/g, replacement: 'js/dojo/dojo.js"'},
+					{ match: /\/\/js.arcgis.com\/4.6\/"/g, replacement: 'js/dojo/dojo.js"'},
 					// remove the reference to your app package
 					{ match: /\/\/ DELETE FROM HERE[\s\S]*\/\/ TO HERE/, replacement: ''},
 					// clean up any debug flags to make the app ready for production
