@@ -102,7 +102,7 @@ module.exports = function (grunt) {
 		  options:{
 			singleRun: true,
 			captureTimeout:30000,
-			reporters : ['junit', 'coverage'],
+			reporters : ['junit', 'progress'],
 			junitReporter: {
 			  outputDir: 'test-reports', // results will be saved as $outputDir/$browserName.xml 
 			  outputFile: undefined, // if included, results will be saved as $outputDir/$browserName/$outputFile 

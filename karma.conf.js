@@ -73,7 +73,7 @@ module.exports = function(config) {
     // set FIREFOX_BIN="c:\Program Files (x86)\Mozilla Firefox\firefox.exe"
     // see: http://karma-runner.github.io/0.10/config/browsers.html
     browsers: [
-      'Chrome'
+      'ChromeHeadless'
       // add the name (from above) for each additional
       // browser you want to test below
       // , 'Firefox'
