@@ -6,7 +6,7 @@
   },
   "resolutions": {
     "dojo": "v1.13.0/esri-3.23.0",
-    "dijit": "v1.13.1/esri-3.23.0",
-    "dojox": "v1.13.1/esri-3.23.0"
+    "dijit": "v1.13.0/esri-3.23.0",
+    "dojox": "v1.13.0/esri-3.23.0"
   }
 }
