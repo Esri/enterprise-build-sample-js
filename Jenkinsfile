@@ -24,10 +24,19 @@ pipeline {
 				}
 			}
 		}
-		stage('deploy') {
+		stage('deploy QA') {
 			steps {
 				unstash 'app'
 				bat 'grunt deploy'
+			}
+		}
+		stage('deploy Prod') {
+			steps {
+			    milestone(3)
+			    input message: 'Deploy?'
+				unstash 'app'
+				bat 'grunt deploy --port=8081'
+				milestone(4)
 			}
 		}
 	}

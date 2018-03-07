@@ -11,7 +11,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-tomcat-deploy');
   grunt.loadNpmTasks('grunt-zip');
 
-  var port = grunt.option('port') || 8000;
+  var watchPort = grunt.option('watchPort') || 8000;
+  var port = grunt.option('port') || 8080;
+  var host = grunt.option('host') || 'localhost';
+  var path = grunt.option('path') || 'sample';
   
   grunt.initConfig({
 	  
@@ -164,11 +167,11 @@ module.exports = function (grunt) {
     // Tomcat redeploy task still gets its config from tomcat_deploy
     // config item
     tomcat_deploy: {
-      host: 'localhost',
+      host: host,
       login: 'tomcat',
       password: 'tomcat',
-      path: '/sample',
-      port: 8080,
+      path: '/' + path,
+      port: port,
       war:  'sample.war',
       deploy: '/manager/text/deploy',
       undeploy: '/manager/text/undeploy'
