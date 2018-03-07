@@ -5,7 +5,7 @@ define([
         "dojo/_base/xhr",
         "dojo/dom-construct",
         "dojo/data/ItemFileReadStore",
-        "dojox/grid/DataGrid",
+		"dojox/grid/DataGrid",
         "esri/Graphic",
         "esri/PopupTemplate",
         "esri/symbols/SimpleFillSymbol",
@@ -144,7 +144,7 @@ define([
 			popup.open({
 				"location": point
 			});
-			
+
 			this.grid = new DataGrid({
 				store: this.store,
 				structure: layout,
@@ -153,9 +153,10 @@ define([
 			
 			domConstruct.place(this.gridDomNode,this.domNode);
 			this.gridDomNode.appendChild(this.grid.domNode);
-			
 			this.grid.startup();
 			
+			window.setTimeout(lang.hitch(this.grid,this.grid.resize),500);
+
 			// Setup click event behavior.
 			this.grid.own(this.grid.on("RowClick", lang.hitch(this, function (evt) {
 				var item = this.store._arrayOfAllItems[evt.rowIndex];

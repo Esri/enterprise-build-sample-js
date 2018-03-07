@@ -21,16 +21,11 @@ var profile = {
 				'dojox/gfx/filters',
 				'dojox/gfx/svgext',
 				'esri/views/2d/layers/TiledLayerView2D',
-				'esri/views/2d/layers/MapImageLayerView2D'
+				'esri/views/2d/layers/MapImageLayerView2D',
+				'esri/identity/IdentityManager'
 			],
 			includeLocales: ['en-us']
-		},
-    	'esri/layers/VectorTileLayerImpl': {
-    		include: [
-        		"esri/layers/VectorTileLayerImpl"
-    		],
-      		includeLocales: ["en-us"]
-    	}
+		}
 	},
 	packages: [
 		{
@@ -73,7 +68,6 @@ var profile = {
 			"name": "xstyle",
 			"location" : "./xstyle"
 		},
-		// moment package is newly needed for 3.16
 		{
 		  name: 'moment',
 		  location: './moment',

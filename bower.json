@@ -2,11 +2,6 @@
   "name": "enterprise-build-sample-js",
   "version": "1.0.0",
   "dependencies": {
-    "esri": "arcgis-js-api#4.3.0"
-  },
-  "resolutions": {
-    "dojo": "v1.12.1/esri-3.20.0",
-    "dijit": "v1.12.1/esri-3.20.0",
-    "dojox": "v1.12.1/esri-3.20.0"
+    "esri": "arcgis-js-api#4.6.0"
   }
 }
