@@ -11,7 +11,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-tomcat-deploy');
   grunt.loadNpmTasks('grunt-zip');
 
-  var watchPort = grunt.option('watchPort') || 8000;
+  var servePort = grunt.option('servePort') || 8000;
   var port = grunt.option('port') || 8080;
   var host = grunt.option('host') || 'localhost';
   var path = grunt.option('path') || 'sample';
@@ -123,7 +123,7 @@ module.exports = function (grunt) {
 	connect: {
 	  	server: {
 	  		options: {
-	  			port: port,
+	  			port: servePort,
 	  			livereload: true,
 	  			open: true,
 	  			base: ['web','node_modules']
@@ -136,7 +136,7 @@ module.exports = function (grunt) {
 		},
 		js: {
 			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ],
-			tasks: ['js']
+			tasks: ['test']
 		},
 		html: {
 			files: [ 'web/index.html']
@@ -172,9 +172,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', ['tomcat_redeploy']);
 
-  grunt.registerTask('test', ['jshint', 'karma']);
+  grunt.registerTask('test', ['eslint', 'karma']);
 
   // JS task
-  grunt.registerTask('js', [ 'jshint']);
+  grunt.registerTask('js', [ 'eslint']);
 
 };
