@@ -7,9 +7,14 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+  grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-tomcat-deploy');
+  grunt.loadNpmTasks('grunt-zip');
 
-  var port = grunt.option('port') || 8000;
+  var servePort = grunt.option('servePort') || 8000;
+  var port = grunt.option('port') || 8080;
+  var host = grunt.option('host') || 'localhost';
+  var path = grunt.option('path') || 'sample';
   
   grunt.initConfig({
 	  
@@ -112,62 +117,64 @@ module.exports = function (grunt) {
 		  }
 	  }
 	},
-	jshint: {
-		options: {
-			curly: false,
-			eqeqeq: true,
-			immed: true,
-			latedef: true,
-			newcap: true,
-			noarg: true,
-			sub: true,
-			undef: true,
-			eqnull: true,
-			browser: true,
-			expr: true,
-			globals: {
-				head: false,
-				module: false,
-				console: false,
-				unescape: false,
-				define: false,
-				exports: false
-			}
-		},
-		files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ]
+	eslint: {
+		files: [ 'web/js/buildProject/**/*.js' ]
 	},
 	connect: {
 	  	server: {
 	  		options: {
-	  			port: port,
+	  			port: servePort,
 	  			livereload: true,
 	  			open: true,
 	  			base: ['web','node_modules']
 	  		}
 	  	}
-	  },
-	  watch: {
+	},
+	watch: {
 		options: {
 			livereload: true
 		},
 		js: {
 			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ],
-			tasks: ['js']
+			tasks: ['test']
 		},
 		html: {
 			files: [ 'web/index.html']
 		}
+	},
+
+    // Tomcat redeploy task still gets its config from tomcat_deploy
+    // config item
+    tomcat_deploy: {
+      host: host,
+      login: 'tomcat',
+      password: 'tomcat',
+      path: '/' + path,
+      port: port,
+      war:  'sample.war',
+      deploy: '/manager/text/deploy',
+      undeploy: '/manager/text/undeploy'
+    },
+
+    zip: {
+    	war: {
+		    cwd: 'dist',
+		    dest: 'sample.war',
+		    src: ['dist/**']
+	    }
 	}
   });
 
   // Serve dev app locally
-  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+  grunt.registerTask('serve', [ 'connect', 'watch' ]);
 
   grunt.registerTask('build', ['clean:build', 'copy:prebuild', 'dojo', 'copy:postbuild', 'replace', 'clean:postbuild']);
 
-  grunt.registerTask('test', ['jshint', 'karma']);
+  grunt.registerTask('deploy', ['tomcat_redeploy']);
 
-  	// JS task
-	grunt.registerTask( 'js', [ 'jshint'] );
+  grunt.registerTask('test', ['eslint', 'karma']);
+
+  // JS task
+  grunt.registerTask('js', [ 'eslint']);
 
 };
