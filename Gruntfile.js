@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = function (grunt) {
   // Build customizations would be left up to developer to implement.
   grunt.loadNpmTasks('grunt-dojo');
