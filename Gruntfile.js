@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-tomcat-deploy');
   grunt.loadNpmTasks('grunt-zip');
 
@@ -117,29 +117,8 @@ module.exports = function (grunt) {
 		  }
 	  }
 	},
-	jshint: {
-		options: {
-			curly: false,
-			eqeqeq: true,
-			immed: true,
-			latedef: true,
-			newcap: true,
-			noarg: true,
-			sub: true,
-			undef: true,
-			eqnull: true,
-			browser: true,
-			expr: true,
-			globals: {
-				head: false,
-				module: false,
-				console: false,
-				unescape: false,
-				define: false,
-				exports: false
-			}
-		},
-		files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ]
+	eslint: {
+		files: [ 'web/js/buildProject/**/*.js' ]
 	},
 	connect: {
 	  	server: {
