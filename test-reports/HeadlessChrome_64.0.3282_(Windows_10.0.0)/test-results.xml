@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<testsuite name="HeadlessChrome 64.0.3282 (Windows 10.0.0)" package="" timestamp="2018-03-07T16:19:37" id="0" hostname="gbochenek2" tests="3" errors="0" failures="0" time="0">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/64.0.3282.186 Safari/537.36"/>
+  </properties>
+  <testcase name="components: Toolbar  clears graphics and info window" time="0" classname="HeadlessChrome_64_0_3282_(Windows_10_0_0).components: Toolbar "/>
+  <testcase name="components: Toolbar  toggles street map" time="0" classname="HeadlessChrome_64_0_3282_(Windows_10_0_0).components: Toolbar "/>
+  <testcase name="components: Toolbar  created Street Map Layer" time="0" classname="HeadlessChrome_64_0_3282_(Windows_10_0_0).components: Toolbar "/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

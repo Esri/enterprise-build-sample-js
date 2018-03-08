@@ -14,7 +14,7 @@ define([
 					
 					on(this.toggleAssetsButton,"click",lang.hitch(this,this.toggleAssets));
 					
-					on(this.createTravelRingButton,"click",lang.htich(this,this.toggleTravelRingTool));
+					on(this.createTravelRingButton,"click",lang.hitch(this,this.toggleTravelRingTool));
 					
 					on(this.clearGraphicsButton,"click",lang.hitch(this,this.clearGraphics));
 				},
