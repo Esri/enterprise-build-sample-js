@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-dojo');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-replace');
+  grunt.loadNpmTasks('grunt-replace-regex');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');

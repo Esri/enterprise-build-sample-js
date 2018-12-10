@@ -7,3 +7,5 @@ build-src/
 build-temp/
 Chrome_*/
 coverage/
+test-reports/
+test-results.xml
