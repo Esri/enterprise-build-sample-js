@@ -81,7 +81,7 @@ define([
 				//	If you are using a servlet or data on another server, look into switching to dojo.io.script.
 				
 				xhr.get({
-				    url: require.toUrl("data/sampleData.json"),
+				    url: require.toUrl("js/data/sampleData.json"),
 				    handleAs: "json",
 				    load: lang.partial(dojo.hitch(this,this._finalPopulate),point),
 				    error: buildProject.displayError
