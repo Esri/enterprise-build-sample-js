@@ -1,46 +1,37 @@
 # enterprise-build-sample-js
 
-This sample application shows how to run a dojo build on a 4.x ArcGIS API for JavaScript application to get it ready for production. The sample intends for bower to be used for dependency management to download the ArcGIS API for JavaScript, dojo, and other dependencies and grunt to run the dojo build (both of which depend on Node.js). This sample is using the 4.3 version of the ArcGIS API for JavaScript. Updated bower files for newer versions of the ArcGIS API for JavaScript can be found at [https://github.com/Esri/jsapi-resources](https://github.com/Esri/jsapi-resources).
+This sample application shows how to apply webpack on a legacy 4.x ArcGIS API for JavaScript application to get it ready for production. This sample is using the 4.10 version of the ArcGIS API for JavaScript.
 
 ![App](enterprise-build-sample-js.png?raw=true)
 
 ## Features
-* Sample Enterprise Application - Formatted and developed to work with Automated Dojo Builds
-* Sample Grunt File - Build file to be adapted to your own applications
-* Build Profiles - Sample dojo build profile files to be adapted to your own applications
-* Bower File - to download the Dojo, dgrid, put-selector, and xstyle source code, which has been patched to better work with the ArcGIS JavaScript API and the ArcGIS JavaScript API AMD Build. 
+* Sample Enterprise Application - Formatted and developed to work with Automated Webpack Builds
+* Sample Webpack Config - Sample webpack files to be adapted to your own applications
 
 ## Instructions
 
 1. install [git](https://git-scm.com/)
 2. install [Node.js](https://nodejs.org/)
-3. Install global packages with [npm](https://www.npmjs.com)
-
-	`npm install -g grunt-cli`
-
-	`npm install -g bower`
-
-4. Fork and then clone this repository.
-5. Navigate to the folder project was cloned to.
-6. Install local node packages into your project by running `npm install`
-7. Install the JavaScript dependencies `bower install`, because of the .bowerrc file config these will install into the web/js folder.
-8. Run the dojo build using grunt by running `grunt build`
+3. Fork and then clone this repository.
+4. Navigate to the folder project was cloned to.
+5. Install local node packages into your project by running `npm install`
+8. Run the webpack build using grunt by running `npm run build`
 9. When the build is complete the dist directory should be a production ready version of the application
 	
 ## Requirements
 
 * Notepad or your favorite HTML editor
 * [Node.js](https://nodejs.org/)
-* [Bower](https://bower.io)
-* [Grunt](http://gruntjs.com/)
 * Web browser with access to the Internet
 
 ## Resources
 
-* [ArcGIS for JavaScript API Resource Center](https://developers.arcgis.com/javascript/3/)
-* [Dojo Build Process Tutoiral](http://dojotoolkit.org/documentation/tutorials/1.10/build/)
+* [ArcGIS for JavaScript API Resource Center](https://js.arcgis.com/)
+* [ArcGIS WebPack Plugin Documentation](https://developers.arcgis.com/javascript/latest/guide/using-webpack/)
+* [ArcGIS WebPack Plugin Source](https://github.com/esri/arcgis-webpack-plugin)
 * [ArcGIS Blog](http://blogs.esri.com/esri/arcgis/)
 * [twitter@esri](http://twitter.com/esri)
+* [Dev Summit 2018 Build Presentation](https://www.youtube.com/watch?v=KGJs4au30Zk)
 * [Dev Summit 2017 Build Presentation](https://www.youtube.com/watch?v=3H_de4pAs70)
 * [Dev Summit 2017 Testing Presentation](https://www.youtube.com/watch?v=QJIQxx79MhE)
 
