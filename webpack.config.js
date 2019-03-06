@@ -60,7 +60,7 @@ module.exports = {
     new ArcGISPlugin(),
 
     new HtmlWebPackPlugin({
-        title: "ArcGIS Template Application",
+        title: "Build Project",
         template: "./web/index.html",
         filename: "./index.html",
         chunksSortMode: "none",
