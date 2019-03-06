@@ -8,6 +8,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-tomcat-deploy');
   grunt.loadNpmTasks('grunt-zip');
 
+  var servePort = grunt.option('servePort') || 8000;
+  var port = grunt.option('port') || 8080;
+  var host = grunt.option('host') || 'localhost';
+  var path = grunt.option('path') || 'sample';
   
   grunt.initConfig({
 	karma: {
@@ -57,7 +61,7 @@ module.exports = function (grunt) {
       password: 'tomcat',
       path: '/' + path,
       port: port,
-      war:  'sample.war',
+      war:  'sample-webpack.war',
       deploy: '/manager/text/deploy',
       undeploy: '/manager/text/undeploy'
     },
@@ -65,7 +69,7 @@ module.exports = function (grunt) {
     zip: {
     	war: {
 		    cwd: 'dist',
-		    dest: 'sample.war',
+		    dest: 'sample-webpack.war',
 		    src: ['dist/**']
 	    }
 	}
