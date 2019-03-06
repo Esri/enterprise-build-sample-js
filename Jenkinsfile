@@ -15,8 +15,8 @@ pipeline {
 		stage('build') {
 			steps {
 				bat 'npm install'
-				bat 'bower install'
-				bat 'grunt build zip -v'
+				bat 'npm run build'
+				bat 'grunt zip:war'
 			}
 			post {
 				success {
