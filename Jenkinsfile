@@ -27,7 +27,7 @@ pipeline {
 		stage('deploy QA') {
 			steps {
 				unstash 'app'
-				bat 'grunt deploy'
+				bat 'grunt deploy --path=sample-webpack'
 			}
 		}
 		stage('deploy Prod') {
