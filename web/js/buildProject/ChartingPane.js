@@ -74,7 +74,7 @@ define([
 			// Note: The 1 is appended to the entityDistrictUrl to run the query on Districts.
 			//	This can be modified to change the layer.  To run query tasks on multiple layers,
 			//	new query tasks will have to be constructed.
-			this.queryTask = new QueryTask(this.config.entityDistrictUrl + "/2");
+			this.queryTask = new QueryTask(this.config.entityDistrictUrl + "/" + this.config.entityDistrictLayer);
 		},
 		show: function(/*String*/field,/*String*/title,/*Object*/data,/*int*/layerId){
 			//	summary:

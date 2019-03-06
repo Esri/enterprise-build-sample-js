@@ -1,8 +1,9 @@
 {
 	"transportationUrl": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer",
 	"boundariesUrl": "http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places_Alternate/MapServer",
-	"entityDistrictUrl": "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer",
-	"assetsUrl": "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Census_USA/MapServer",
+	"entityDistrictUrl": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Demographic_WebMercator/MapServer/",
+	"entityDistrictLayer": "8",
+	"assetsUrl": "https://maps2.dcgis.dc.gov/dcgis/rest/services/DCGIS_DATA/Demographic_WebMercator/MapServer/",
 	"driveTimesUrl": "http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Network/ESRI_DriveTime_US/GPServer/CreateDriveTimePolygons",
 	"mapLods": [
 		{"level" : 0, "resolution" : 9783.93962049996, "scale" : 36978595.474472}, 

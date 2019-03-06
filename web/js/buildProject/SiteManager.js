@@ -9,8 +9,6 @@ define([
         "esri/Map",
         "esri/views/MapView",
         "esri/geometry/Extent",
-        "esri/layers/MapImageLayer",
-        "esri/layers/TileLayer",
         "esri/tasks/support/IdentifyParameters",
         "esri/tasks/IdentifyTask",
         // Our Project's classes ---------------------------------------------
@@ -27,9 +25,7 @@ define([
 		Map,
 		MapView,
 		Extent,
-		MapImageLayer,
-		TileLayer,
-		IdentifyParameters,
+				IdentifyParameters,
 		IdentifyTask,
 		buildProject,
 		InfoGrid,
@@ -191,15 +187,7 @@ define([
 			//  2: Zip Codes
 			
 			var level = this.view.get("zoom");
-			if (level < 2){
-				this.identifyParams.layerIds = [0];
-			} else if (level >= 2 && level < 5){
-				this.identifyParams.layerIds = [1];
-			} else if (level >= 7){
-				this.identifyParams.layerIds = [2];
-			} else {
-				return;
-			}
+			this.identifyParams.layerIds = [this.config.entityDistrictLayer];
 			
 			this.identifyTask.execute(this.identifyParams).then(
 				lang.partial(dojo.hitch(this.infoGrid,this.infoGrid.populate),evt.mapPoint),
