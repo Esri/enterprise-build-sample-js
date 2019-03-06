@@ -12,9 +12,9 @@ define([
         "esri/tasks/support/IdentifyParameters",
         "esri/tasks/IdentifyTask",
         // Our Project's classes ---------------------------------------------
-        "buildProject/buildProject",
-        "buildProject/InfoGrid",
-        "buildProject/Toolbar"
+        "./buildProject",
+        "./InfoGrid",
+        "./Toolbar"
 ], function (
 		declare,
 		kernel,

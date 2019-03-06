@@ -9,7 +9,7 @@ define([
         "esri/symbols/SimpleLineSymbol",
         "esri/tasks/Geoprocessor",
         //	Our Project's classes ---------------------------------------------
-        "buildProject/TravelRingDialog"
+        "./TravelRingDialog"
 ], function (
 		Color,
 		declare,

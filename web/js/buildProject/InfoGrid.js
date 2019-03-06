@@ -10,8 +10,8 @@ define([
         "esri/PopupTemplate",
         "esri/symbols/SimpleFillSymbol",
         //	Our Project's classes ---------------------------------------------
-        "buildProject/buildProject",
-        "buildProject/ChartingPane",
+        "./buildProject",
+        "./ChartingPane",
         //  Widget base classes -----------------------------------------------
         "dijit/_WidgetBase",
         "dijit/_TemplatedMixin",

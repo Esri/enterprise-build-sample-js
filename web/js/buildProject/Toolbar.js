@@ -14,8 +14,8 @@ define([
         "esri/tasks/support/IdentifyParameters",
         "esri/tasks/IdentifyTask",
         // 	Our Project's classes ---------------------------------------------
-        "buildProject/buildProject",
-        "buildProject/TravelRingTool",
+        "./buildProject",
+        "./TravelRingTool",
         //	Widget base classes -----------------------------------------------
         "dijit/_WidgetBase",
         "dijit/_TemplatedMixin",

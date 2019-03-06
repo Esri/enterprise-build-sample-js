@@ -13,7 +13,7 @@ define([
         "esri/tasks/support/Query",
         "esri/tasks/QueryTask",
         //	Our Project's classes ---------------------------------------------
-        "buildProject/buildProject",
+        "./buildProject",
         //	Widget base classes -----------------------------------------------
         "dijit/_WidgetBase",
         "dijit/_TemplatedMixin",
