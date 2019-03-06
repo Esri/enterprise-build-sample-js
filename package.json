@@ -23,7 +23,7 @@
     "grunt-eslint": "^20.1.0",
     "grunt-karma": "^3.0.1",
     "grunt-replace-regex": "^1.0.3",
-    "grunt-tomcat-deploy": "git@github.com:rsjones/grunt-tomcat-deploy.git",
+    "grunt-tomcat-deploy": "git://github.com/rsjones/grunt-tomcat-deploy.git",
     "grunt-zip": "^0.10.2",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
