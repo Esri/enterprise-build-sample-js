@@ -61,7 +61,7 @@ define([
 			
 			
 			xhr.get({
-				"url": require.toUrl("data/config.json"),
+				"url": require.toUrl("js/data/config.json"),
 				"handleAs":"json",
 				"load": lang.hitch(this,function(config){
 					this.config = config;

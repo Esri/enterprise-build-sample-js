@@ -1,8 +1,11 @@
+const webpack = require('webpack')
+
 const ArcGISPlugin = require("@arcgis/webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const path = require("path");
 
@@ -29,8 +32,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader",
-            options: { minimize: false }
+            loader: "html-loader"
           }
         ],
         exclude: /node_modules/
@@ -43,7 +45,18 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-
+    new CopyWebpackPlugin([
+      { 
+        from: 'web/js/data',
+        to: "js/data" },
+        {
+          from: "web/js/images",
+          to: "js/images"
+        }
+  ]),
+  new webpack.NormalModuleReplacementPlugin(/^dojo\/text!/, function(data) {
+    data.request = data.request.replace(/^dojo\/text!/, "!!raw-loader!");
+  }),
     new ArcGISPlugin(),
 
     new HtmlWebPackPlugin({
