@@ -6,7 +6,7 @@
   "scripts": {
     "test": "grunt test",
     "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode production",
+    "build": "webpack --mode development",
     "serve": "webpack-dev-server --mode production --open --https --compress"
   },
   "devDependencies": {
