@@ -8,7 +8,10 @@ define([
 
   describe('components: Toolbar ', function() {
 	var testArgs = {
-		"view": {},
+		"view": {
+			get:function(){},
+		  watch:function(){}
+		},
 		"config": {},
 		"map": {}
 	};
@@ -60,6 +63,16 @@ define([
 		
 	});
 	
+  it('enables assets button', function(){
+		// 1. Toolbar should be disabled for zoom levels < 6
+
+
+		// 2. Toolbar should be enabled for zoom levels >= 6
+
+
+		//expect(toolbar.toggleAssetsButton.get("disabled")).toBeTruthy();
+	});
+
 	it('created Street Map Layer', function(){
 		
 		toolbar.map = jasmine.createSpyObj('toolbar.map',['add']);

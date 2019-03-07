@@ -77,6 +77,19 @@ define([
 			//		Runs after the widget is completely formed.  Sets up the floating behavior.
 			
 			var moveable = new Moveable(this.domNode,{handle:this.header});
+
+			var setAssetButtonState = lang.hitch(this,function(zoom){
+				if (zoom <= 6){
+					this.toggleAssetsButton.set("disabled",true);
+				} else {
+					this.toggleAssetsButton.set("disabled",false);
+				}
+			});
+
+			// Set initial assets Button state
+			setAssetButtonState(this.view.get("zoom"));
+			//reset assets 
+			this.view.watch("zoom", setAssetButtonState);
 		},
 		toggleStreetMap: function(){
 			//	summary:
@@ -136,9 +149,6 @@ define([
 			}
 			if (this.viewingAssets){
 				
-				if (this.view.get("zoom") < 6){
-					this.toggleAssetsButton.set("disabled",true);
-				}
 				this.assetLayer.set("visible",false);
 				this.toggleAssetsButton.set("label","Show Assets");
 				this.disableAssetConnect();

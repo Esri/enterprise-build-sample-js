@@ -111,9 +111,7 @@ define([
 					}), 250);
 				}));
 			}));
-			
-			// Connect zoom and resize handlers.
-			this.view.watch("zoom", lang.hitch(this,this._onZoom));
+
 		},
 		setupToolbar: function(){
 			//	summary:
@@ -193,25 +191,6 @@ define([
 				lang.partial(dojo.hitch(this.infoGrid,this.infoGrid.populate),evt.mapPoint),
 				buildProject.displayError
 			);
-		},
-		_onZoom: function(/*int*/level){
-			//	summary:
-			//		Called everytime the maps zoom level is changed.
-			//	description:
-			//		Called everytime the maps zoom level is changed.
-			//		Adjusts the visibility of the boundaries layer and handles the asset layer button.
-			//	level:	int
-			//		Zoom level after zooming.
-			
-			
-			if (level > 12){
-				this.toolbar.toggleAssetsButton.set("disabled",false);
-			} else {
-				if (this.toolbar.viewingAssets){
-					this.toolbar.toggleAssetLayer();
-				}
-				this.toolbar.toggleAssetsButton.set("disabled",true);
-			}
 		}
 	});
 });

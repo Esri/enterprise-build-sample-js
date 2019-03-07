@@ -8,7 +8,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-tomcat-deploy');
   grunt.loadNpmTasks('grunt-zip');
 
-  
+	var servePort = grunt.option('servePort') || 8000;
+  var port = grunt.option('port') || 8080;
+  var host = grunt.option('host') || 'localhost';
+  var path = grunt.option('path') || 'sample';
+	
   grunt.initConfig({
 	karma: {
 	  options: {
@@ -41,7 +45,7 @@ module.exports = function (grunt) {
 			livereload: true
 		},
 		js: {
-			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js' ],
+			files: [ 'Gruntfile.js', 'web/js/buildProject/**/*.js', 'spec/**/*.js' ],
 			tasks: ['test']
 		},
 		html: {
