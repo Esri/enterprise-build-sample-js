@@ -27,7 +27,8 @@ pipeline {
 		stage('deploy QA') {
 			steps {
 				unstash 'app'
-				bat 'grunt deploy --path=sample-webpack'
+				//
+				bat 'xcopy dist c:/Apache24/htdocs/sample-webpack'
 			}
 		}
 		stage('deploy Prod') {
@@ -35,7 +36,7 @@ pipeline {
 			    milestone(3)
 			    input message: 'Deploy?'
 				unstash 'app'
-				bat 'grunt deploy --port=8081'
+				bat 'xcopy dist c:/Apache24/htdocs/sample'
 				milestone(4)
 			}
 		}
