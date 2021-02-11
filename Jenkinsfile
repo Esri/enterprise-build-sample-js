@@ -27,17 +27,15 @@ pipeline {
 		stage('deploy QA') {
 			steps {
 				unstash 'app'
-				//
-				bat 'xcopy dist c:/Apache24/htdocs/sample-webpack'
+				bat 'if exist c:\\Apache24\\htdocs\\sample-webpack RD /S /Q c:\\Apache24\\htdocs\\sample-webpack'
+				bat 'xcopy /E /I dist c:\\Apache24\\htdocs\\sample-webpack'
 			}
 		}
-		stage('deploy Prod') {
+		stage('release') {
 			steps {
-			    milestone(3)
-			    input message: 'Deploy?'
-				unstash 'app'
-				bat 'xcopy dist c:/Apache24/htdocs/sample'
-				milestone(4)
+				// This could stash the release to an Object Store like S3 or to a github release
+				// or could just create a tag in git to later recheck out the project
+				bat "xcopy /E /I dist c:\\archive\\${env.JOB_NAME}\\sample-webpack-${env.BUILD_ID}"
 			}
 		}
 	}

@@ -1,0 +1,16 @@
+pipeline {
+	agent { label 'windows' }
+	stages {
+		stage('deploy Prod') {
+			steps {
+				bat 'if exist c:\\Apache24\\htdocs\\sample RD /S /Q c:\\Apache24\\htdocs\\sample'
+				bat "xcopy /E /I c:\\archive\\${params.JOB_NAME}\\sample-webpack-${params.BUILD_ID} c:\\Apache24\\htdocs\\sample"
+			}
+		}
+	}
+	post {
+		failure {
+			mail to: 'randy_jones@esri.com', subject: 'The Pipeline failed', body: 'The Pipeline failed'
+		}
+	}
+}
